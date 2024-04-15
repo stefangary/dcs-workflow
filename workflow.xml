@@ -1,0 +1,224 @@
+<tool id='NA' name='NA'>
+  <command interpreter='bash'>main.sh</command>
+  <cancel interpreter='bash'>cancel.sh</cancel>
+  <inputs>
+      <section name='dcs' type='section' title='Monte Carlo Simulation Options' expanded='true'>
+        <param 
+            name='analysis_type' 
+            type='select' 
+            label='Analysis Type' 
+            help='Select Montecarlo simulation or contributor analysis (sensitivity)' 
+            multiple='false'
+        >
+            <option value="montecarlo"  selected="true">Montecarlo Simulation</option>
+            <option value="sensitivity" >Contributor Analysis</option>
+        </param>
+        <param name='bucket_id' 
+            label='Bucket ID or namespace' 
+            type='text' 
+            value='[bucket-owner]/[bucket-name]' 
+            help='Type in the bucket ID string or namespace in the format [bucket-owner]/[bucket-name]' 
+        ></param>
+        <param 
+            name='model_directory' 
+            label='Model Directory' 
+            type='text' 
+            help='Directory within the bucket with the model and all the required files' 
+            value=''
+        ></param>
+        <param 
+            name='output_directory' 
+            label='Output Directory' 
+            type='text' 
+            help='Output directory within the bucket to store outputs and logs. It cannot be inside the Model Directory!' 
+            value=''
+        ></param>
+        <param 
+            name='num_seeds' 
+            type='integer' 
+            label='Number of Monte Carlo Simulations' 
+            min='1' 
+            max='100000' 
+            value='2000'
+            depends_on='dcs.analysis_type'
+            show_if="montecarlo"
+        ></param>
+        <param 
+            name='concurrency' 
+            type='integer' 
+            label='Case Concurrency' 
+            min='1' 
+            max='100' 
+            value='10' 
+            help='Number of workers used to run the simulations. A SLURM job is submitted for each worker.' 
+        ></param>
+        <param 
+            name='thread' 
+            type='integer' 
+            label='Thread Number [1-4]' 
+            min='1' 
+            max='4' 
+            value='1' 
+            help='Number of threads used to run the simulation. Coincides with the number SLURM --ntasks-per-node parameter of the job'
+        ></param>
+    </section>
+    <section name='pwrl_001_simulation_executor' type='section' title='Simulation Executor' expanded='true'>
+        <param 
+            name='dcs_load' 
+            label='Command to load DCS' 
+            type='text' 
+            help='To load the environment, enter the appropriate command, for example: module load module-name or source path/to/env.sh.' 
+            value=''
+            optional='true' 
+        ></param>
+        <param 
+            name='dcs_run' 
+            label='Command to run DCS' 
+            type='text' 
+            help='Specify the PATH as seen from Windows Subsystem for Linux or Wine' 
+            value='/c/Program\ Files/DCS/3DCS_MC_8_0_0_2/dcsSimuMacro.exe'
+        ></param>
+        <param 
+            name='resource' 
+            type='computeResource' 
+            label='Resource' 
+            hideUserWorkspace='true' 
+            help='Resource to run the simulation task'>
+        </param>
+        <param 
+            name='jobschedulertype' 
+            label='Select Controller, SLURM Partition or PBS Queue' 
+            type='hidden' 
+            value='SLURM' 
+        >
+        </param>
+        <param 
+            name='_sch__dd_partition_e_' 
+            label='SLURM partition' 
+            type='dynamicPartitionDropdown' 
+            resource='pwrl_001_simulation_executor.resource'
+            help='Partition to submit the interactive job. Leave empty to let SLURM pick the optimal option.' 
+            optional='true'   
+        ></param>
+        <param 
+            name='_sch__dd_ntasks_d_per_d_node_e_' 
+            label='Tasks per Node' 
+            type='hidden' 
+            help='--ntasks-per-node=value slurm directive' 
+            value='_replace_with_dcs.thread'
+        ></param>
+        <param 
+            name='_sch__dd_nodes_e_' 
+            label='Number of Nodes' 
+            type='integer' 
+            min="1" 
+            max="2" 
+            help='--nodes=value slurm directive' 
+            value='1'
+        ></param>
+        <param 
+            name='_sch__dd_time_e_' 
+            label='Walltime' 
+            type='text' 
+            help='Maximum walltime per job' 
+            value='02:00:00'
+            optional='true' 
+        ></param>
+        <param 
+            name='scheduler_directives' 
+            label='Scheduler directives' 
+            type='text' 
+            help='e.g. --mem=1000;--gpus-per-node=1 - Use the semicolon character ; to separate parameters. Do not include the SBATCH keyword.' 
+            value=''
+            optional='true'  
+        ></param>
+        <param 
+            name='workdir' 
+            label='Shared Work Directory' 
+            type='text' 
+            help='This directory must be shared between the compute and login nodes. This parameter overwrites the working directory in the resource definition page' 
+            value='__WORKDIR__'
+        ></param>
+    </section>
+    <section name='pwrl_002_merge_executor' type='section' title='Merge Executor' expanded='true'>
+        <param 
+            name='dcs_load' 
+            label='Command to load DCS' 
+            type='text' 
+            help='To load the environment, enter the appropriate command, for example: module load module-name or source path/to/env.sh.' 
+            value=''
+            optional='true' 
+        ></param>
+        <param 
+            name='dcs_run' 
+            label='Command to run DCS' 
+            type='text' 
+            help='Specify the PATH as seen from Windows Subsystem for Linux or Wine' 
+            value='/c/Program\ Files/DCS/3DCS_MC_8_0_0_2/dcsSimuMacro.exe'
+        ></param>
+        <param 
+            name='resource' 
+            type='computeResource' 
+            label='Resource' 
+            hideUserWorkspace='true' 
+            help='Resource to run the simulation task'>
+        </param>
+        <param 
+            name='jobschedulertype' 
+            label='Select Controller, SLURM Partition or PBS Queue' 
+            type='hidden' 
+            value='SLURM' 
+        >
+        </param>
+        <param 
+            name='_sch__dd_partition_e_' 
+            label='SLURM partition' 
+            type='dynamicPartitionDropdown' 
+            resource='pwrl_002_merge_executor.resource'
+            help='Partition to submit the interactive job. Leave empty to let SLURM pick the optimal option.' 
+            optional='true'   
+        ></param>
+        <param 
+            name='_sch__dd_ntasks_d_per_d_node_e_' 
+            label='Tasks per Node' 
+            type='integer' 
+            min="1" 
+            max="64" 
+            help='--ntasks-per-node=value slurm directive' 
+            value='2'
+        ></param>
+        <param 
+            name='_sch__dd_nodes_e_' 
+            label='Number of Nodes' 
+            type='integer' 
+            min="1" 
+            max="2" 
+            help='--nodes=value slurm directive' 
+            value='1'
+        ></param>
+        <param 
+            name='_sch__dd_time_e_' 
+            label='Walltime' 
+            type='text' 
+            help='Maximum walltime per job' 
+            value='02:00:00'
+            optional='true' 
+        ></param>
+        <param 
+            name='scheduler_directives' 
+            label='Scheduler directives' 
+            type='text' 
+            help='e.g. --mem=1000;--gpus-per-node=1 - Use the semicolon character ; to separate parameters. Do not include the SBATCH keyword.' 
+            value=''
+            optional='true'  
+        ></param>
+        <param 
+            name='workdir' 
+            label='Shared Work Directory' 
+            type='text' 
+            help='This directory must be shared between the compute and login nodes. This parameter overwrites the working directory in the resource definition page' 
+            value='__WORKDIR__'
+        ></param>
+    </section>
+    </inputs>
+</tool>
