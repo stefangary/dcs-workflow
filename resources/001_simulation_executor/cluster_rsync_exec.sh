@@ -4,31 +4,29 @@ cd $(dirname $0)
 source inputs.sh
 source workflow-libs.sh
 
-if [[ "${dcs_analysis_type}" == "montecarlo" ]]; then
-    run_script=
-
-
 create_case(){
-    case_dir=simulation_${case_index}
+    # The merge tasks syncs the results from an S3 bucket. To simplify the path to the
+    # results in the S3 bucket ww use the resource job dir
+    case_dir=${resource_jobdir}/simulation_${case_index}
     mkdir -p ${case_dir}
 
     echo "    Writing job script"
     cp batch_header.sh  ${case_dir}/run_case.sh
 
     if [[ ${jobschedulertype} == "SLURM" ]]; then 
-        echo "#SBATCH -o ${resource_jobdir}/${case_dir}/logs_${case_index}.out" >> ${case_dir}/run_case.sh
-        echo "#SBATCH -e ${resource_jobdir}/${case_dir}/logs_${case_index}.out" >> ${case_dir}/run_case.sh
+        echo "#SBATCH -o ${case_dir}/logs_${case_index}.out" >> ${case_dir}/run_case.sh
+        echo "#SBATCH -e ${case_dir}/logs_${case_index}.out" >> ${case_dir}/run_case.sh
     elif [[ ${jobschedulertype} == "PBS" ]]; then
-        echo "#PBS -o ${resource_jobdir}/${case_dir}/logs_${case_index}.out" >> ${case_dir}/run_case.sh
-        echo "#PBS -e ${resource_jobdir}/${case_dir}/logs_${case_index}.out" >> ${case_dir}/run_case.sh
+        echo "#PBS -o ${case_dir}/logs_${case_index}.out" >> ${case_dir}/run_case.sh
+        echo "#PBS -e ${case_dir}/logs_${case_index}.out" >> ${case_dir}/run_case.sh
     fi
     
     # Main script
-    echo "mkdir -p ${PWD}/${case_dir}" >> ${case_dir}/run_case.sh
-    echo "cd ${PWD}/${case_dir}" >> ${case_dir}/run_case.sh
+    echo "mkdir -p ${case_dir}" >> ${case_dir}/run_case.sh
+    echo "cd ${case_dir}" >> ${case_dir}/run_case.sh
     
     # FIXME: This is needed because run directory is not shared between controller and compute nodes
-    echo "rsync -avzq ${resource_privateIp}:${PWD}/${case_dir}/ ."  >> ${case_dir}/run_case.sh
+    #echo "rsync -avzq ${resource_privateIp}:${case_dir}/ ."  >> ${case_dir}/run_case.sh
 
     # Main script
     echo >> ${case_dir}/run_case.sh
@@ -41,8 +39,6 @@ create_case(){
     cat run_dcs.sh >> ${case_dir}/run_case.sh
     cat transfer_outputs.sh >> ${case_dir}/run_case.sh
 
-    echo; cat ${case_dir}/run_case.sh
-
 }
 
 echo; echo; echo "CREATING JOB SCRIPTS"
@@ -53,7 +49,7 @@ done
 
 echo; echo; echo "SUBMITTING JOB SCRIPTS"
 for case_index in $(seq 1 ${dcs_concurrency}); do
-    case_dir=simulation_${case_index}
+    case_dir=${resource_jobdir}/simulation_${case_index}
     echo; echo "  Case ${case_index}"
 
     submit_job_sh=${case_dir}/run_case.sh
@@ -67,9 +63,10 @@ for case_index in $(seq 1 ${dcs_concurrency}); do
     
     if [ -z "${job_id}" ]; then
         echo "  ERROR: ${submit_cmd} ${submit_job_sh} failed"
+        exit 1
     else
         echo "  Submitted job ${job_id}"
-        echo ${job_id} > ${PWD}/${case_dir}/job_id.submitted
+        echo ${job_id} > ${case_dir}/job_id.submitted
     fi
 done
 
@@ -78,7 +75,7 @@ done
 echo; echo "CHECKING JOBS STATUS"
 while true; do
     date
-    submitted_jobs=$(find . -name job_id.submitted)
+    submitted_jobs=$(find ${resource_jobdir} -name job_id.submitted)
 
     if [ -z "${submitted_jobs}" ]; then
         if [[ "${FAILED}" == "true" ]]; then

@@ -2,16 +2,22 @@
 # A dynamicStorage parameter type would be very helpful for this
 
 # Load credentials
-eval $(ssh usercontainer ${pw_job_dir}/utils/bucket_token_generator.py --bucket_id ${dcs_bucket_id} --token_format text)
+eval $(ssh ${resource_ssh_usercontainer_options} usercontainer ${pw_job_dir}/utils/bucket_token_generator.py --bucket_id ${dcs_bucket_id} --token_format text)
 
-# s3_model_directory can end with or without /
-aws s3 sync s3://$BUCKET_NAME/${s3_model_directory} .
+# dcs_model_directory can end with or without /
+aws s3 sync s3://$BUCKET_NAME/${dcs_model_directory} .
 
 # User aws s3 cp --recursive ../test s3://$BUCKET_NAME/path/to/dir/test to transfer to the bucket
 
 
 # Find all files ending in ".wtx" in the current directory, excluding subdirectories
-dcs_model_file=$(find . -maxdepth 1 -type f -name "*.wtx")
+dcs_model_file=$(find . -type f -name "*.wtx")
+
+# Check if dcs_model_file is empty
+if [ -z "$dcs_model_file" ]; then
+    echo "Error: No '.wtx' files found."
+    exit 1
+fi
 
 # Count the number of files found
 file_count=$(echo "$dcs_model_file" | wc -l)

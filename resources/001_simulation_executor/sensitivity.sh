@@ -13,6 +13,6 @@ DCSLOAD ${dcs_model_file}
 
 DCS_CFG_SETTING ${dcs_thread} 0
 
-DCSSENS_CONTRIBUTOR ${dcs_concurrency} ${case_index} merged
+DCSSENS_CONTRIBUTOR ${dcs_concurrency} ${case_index} ${out_hst}
 
 END

@@ -35,6 +35,12 @@ cluster_rsync_exec() {
         # Execute the script
         echo "ssh -o StrictHostKeyChecking=no ${resource_publicIp} ${resource_jobdir}/${resource_label}/cluster_rsync_exec.sh"
         ssh -o StrictHostKeyChecking=no ${resource_publicIp} ${resource_jobdir}/${resource_label}/cluster_rsync_exec.sh
+
+        # Check if the SSH command failed
+        if [ $? -ne 0 ]; then
+            echo "SSH command failed. Exiting..."
+            exit 1
+        fi
     done
 }
 

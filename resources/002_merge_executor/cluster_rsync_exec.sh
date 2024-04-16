@@ -10,28 +10,26 @@ echo "    Writing job script"
 cp batch_header.sh merge.sh
 
 if [[ ${jobschedulertype} == "SLURM" ]]; then 
-    echo "#SBATCH -o ${resource_jobdir}/${case_dir}/logs_merge.out" >> merge.sh
-    echo "#SBATCH -e ${resource_jobdir}/${case_dir}/logs_merge.out" >> merge.sh
+    echo "#SBATCH -o ${PWD}/${case_dir}/logs_merge.out" >> merge.sh
+    echo "#SBATCH -e ${PWD}/${case_dir}/logs_merge.out" >> merge.sh
 elif [[ ${jobschedulertype} == "PBS" ]]; then
-    echo "#PBS -o ${resource_jobdir}/${case_dir}/logs_merge.out" >> merge.sh
-    echo "#PBS -e ${resource_jobdir}/${case_dir}/logs_merge.out" >> merge.sh
+    echo "#PBS -o ${PWD}/${case_dir}/logs_merge.out" >> merge.sh
+    echo "#PBS -e ${PWD}/${case_dir}/logs_merge.out" >> merge.sh
 fi
     
 # FIXME: This is needed because run directory is not shared between controller and compute nodes
-echo "rsync -avzq ${resource_privateIp}:${PWD}/ ."  >> merge.sh
+#echo "rsync -avzq ${resource_privateIp}:${PWD}/ ."  >> merge.sh
 
 
 # Main script
 cat inputs.sh >> merge.sh
 cat transfer_inputs.sh >> merge.sh
-cat merge_dcs.sh >> merge.sh
-echo transfer_outputs.sh >> merge.sh
+cat ${dcs_analysis_type}.sh >> merge.sh
+cat run_dcs.sh >> merge.sh
+cat transfer_outputs.sh >> merge.sh
 
 # FIXME: This is needed because run directory is not shared between controller and compute nodes
 #echo "rsync -avzq . ${resource_privateIp}:${PWD}/"  >> merge.sh
-
-echo; cat merge.sh
-
 
 echo; echo; echo "SUBMITTING MERGE JOB"
 submit_job_sh=./merge.sh
