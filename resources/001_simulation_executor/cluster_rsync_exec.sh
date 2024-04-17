@@ -34,9 +34,11 @@ create_case(){
     echo "export case_index=${case_index}" >> ${case_dir}/run_case.sh
     echo >> ${case_dir}/run_case.sh
 
+    cat load_bucket_credentials_ssh.sh >> ${case_dir}/run_case.sh
     cat transfer_inputs.sh >> ${case_dir}/run_case.sh
     cat ${dcs_analysis_type}.sh >> ${case_dir}/run_case.sh
     cat run_dcs.sh >> ${case_dir}/run_case.sh
+    cat load_bucket_credentials_ssh.sh >> ${case_dir}/run_case.sh
     cat transfer_outputs.sh >> ${case_dir}/run_case.sh
 
 }

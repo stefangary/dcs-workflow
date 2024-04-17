@@ -1,13 +1,8 @@
 # HARDCODED TO AWS
 # A dynamicStorage parameter type would be very helpful for this
 
-# Load credentials
-eval $(ssh ${resource_ssh_usercontainer_options} usercontainer ${pw_job_dir}/utils/bucket_token_generator.py --bucket_id ${dcs_bucket_id} --token_format text)
-
 # Transfer model
-
 # dcs_model_directory can end with or without /
-
 aws s3 sync s3://$BUCKET_NAME/${dcs_model_directory} .
 aws s3 sync s3://$BUCKET_NAME/${dcs_output_directory}/${USER}/${workflow_name}/${job_number} .
 

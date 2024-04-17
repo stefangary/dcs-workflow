@@ -10,8 +10,17 @@ fi
 source /etc/profile.d/parallelworks.sh
 source /etc/profile.d/parallelworks-env.sh
 source /pw/.miniconda3/etc/profile.d/conda.sh
+
+if [ -z "${workflow_utils_branch}" ]; then
+    # If empty, clone the main default branch
+    git clone https://github.com/parallelworks/workflow-utils.git
+else
+    # If not empty, clone the specified branch
+    git clone -b "$workflow_utils_branch" https://github.com/parallelworks/workflow-utils.git
+fi
+
 conda activate
-python3 ./utils/input_form_resource_wrapper.py 
+python3 ./workflow-utils/input_form_resource_wrapper.py 
 
 if [ $? -ne 0 ]; then
     echo "Error: Input form resource wrapper failed. Exiting."
@@ -19,7 +28,11 @@ if [ $? -ne 0 ]; then
 fi
 
 # Load useful functions
-source ./utils/workflow-libs.sh
+source ./workflow-utils/workflow-libs.sh
+
+# Copy useful functions
+cp ./workflow-utils/load_bucket_credentials_ssh.sh resources/001_simulation_executor/
+cp ./workflow-utils/load_bucket_credentials_ssh.sh resources/002_merge_executor/
 
 # Run job on remote resource
 cluster_rsync_exec
