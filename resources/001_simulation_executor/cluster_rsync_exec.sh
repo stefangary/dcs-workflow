@@ -4,6 +4,9 @@ cd $(dirname $0)
 source inputs.sh
 source workflow-libs.sh
 
+echo '#!/bin/bash' > cancel.sh
+chmod +x cancel.sh
+
 create_case(){
     # The merge tasks syncs the results from an S3 bucket. To simplify the path to the
     # results in the S3 bucket ww use the resource job dir
@@ -37,11 +40,24 @@ create_case(){
     cat load_bucket_credentials_ssh.sh >> ${case_dir}/run_case.sh
     cat transfer_inputs.sh >> ${case_dir}/run_case.sh
     cat ${dcs_analysis_type}.sh >> ${case_dir}/run_case.sh
+    cat activate_monitoring.sh >> ${case_dir}/run_case.sh
     cat run_dcs.sh >> ${case_dir}/run_case.sh
+    cat plot_monitoring.sh >> ${case_dir}/run_case.sh
     cat load_bucket_credentials_ssh.sh >> ${case_dir}/run_case.sh
     cat transfer_outputs.sh >> ${case_dir}/run_case.sh
 
 }
+
+# If no conda environment is specified for the CPU and Mem python monitoring utility
+# the workflow assumes monitoring is disabled
+if [ -z "${monitoring_conda_dir}" ] || [ -z "${monitoring_conda_env}" ]; then
+    echo "CPU and Memory monitoring are disabled".
+    echo > activate_monitoring.sh
+    echo > plot_monitoring.sh
+else
+    echo; echo; echo "INSTALLING PYTHON DEPENDENCIES FOR CPU AND MEMORY MONITORING"
+    create_conda_env_from_yaml ${monitoring_conda_dir} ${monitoring_conda_env} ./cpu_and_memory_usage_requirements.yaml
+fi
 
 echo; echo; echo "CREATING JOB SCRIPTS"
 for case_index in $(seq 1 ${dcs_concurrency}); do
@@ -71,8 +87,6 @@ for case_index in $(seq 1 ${dcs_concurrency}); do
         echo ${job_id} > ${case_dir}/job_id.submitted
     fi
 done
-
-
 
 echo; echo "CHECKING JOBS STATUS"
 while true; do

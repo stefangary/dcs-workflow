@@ -31,8 +31,16 @@ fi
 source ./workflow-utils/workflow-libs.sh
 
 # Copy useful functions
-cp ./workflow-utils/load_bucket_credentials_ssh.sh resources/001_simulation_executor/
+cp \
+    ./workflow-utils/load_bucket_credentials_ssh.sh \
+    ./workflow-utils/cpu_and_memory_usage.py \
+    ./workflow-utils/cpu_and_memory_usage_requirements.yaml \
+    resources/001_simulation_executor/
+
 cp ./workflow-utils/load_bucket_credentials_ssh.sh resources/002_merge_executor/
 
 # Run job on remote resource
 cluster_rsync_exec
+
+# Runs every cancel.sh script located on the remote resource directory
+cancel_jobs_by_script

@@ -6,6 +6,8 @@ cat >> macroScript.txt <<END
 DCSVERS	200
 DCSMSSG	1  0
 DCSWORK .
+DCSCOMPLIANT  ${dcs_compliant}
+DCSMECHANICAL  ${dcs_mechanical}
 
 DCS_DEL_FILE *.hlm
 

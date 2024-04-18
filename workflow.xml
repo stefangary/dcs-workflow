@@ -2,7 +2,7 @@
   <command interpreter='bash'>main.sh</command>
   <cancel interpreter='bash'>cancel.sh</cancel>
   <inputs>
-      <section name='dcs' type='section' title='Monte Carlo Simulation Options' expanded='true'>
+      <section name='dcs' type='section' title='DCS Options' expanded='true'>
         <param 
             name='analysis_type' 
             type='select' 
@@ -61,14 +61,44 @@
             value='1' 
             help='Number of threads used to run the simulation. Coincides with the number SLURM --ntasks-per-node parameter of the job'
         ></param>
+        <param 
+            name="compliant" 
+            type="boolean" 
+            truevalue="1" 
+            falsevalue="0" 
+            checked="False" 
+            label="Load Compliant?" 
+            help='load compliant or not'  
+        ></param>
+        <param 
+            name="mechanical" 
+            type="boolean" 
+            truevalue="1" 
+            falsevalue="0" 
+            checked="False" 
+            label="load Mechanical AddIn?" 
+            help='load Mechanical AddIn or not'  
+        ></param>
     </section>
     <section name='pwrl_001_simulation_executor' type='section' title='Simulation Executor' expanded='true'>
+        <param 
+            name='monitoring_conda_dir' 
+            label='PW Conda Directory' 
+            type='hidden' 
+            value='__WORKDIR__/pw/miniconda'
+        ></param>
+        <param 
+            name='monitoring_conda_env' 
+            label='PW Conda Directory' 
+            type='hidden' 
+            value='psutil'
+        ></param>
         <param 
             name='dcs_load' 
             label='Command to load DCS' 
             type='text' 
             help='To load the environment, enter the appropriate command, for example: module load module-name or source path/to/env.sh.' 
-            value=''
+            value='source /dcs/load-3dcs.sh'
             optional='true' 
         ></param>
         <param 
@@ -76,7 +106,7 @@
             label='Command to run DCS' 
             type='text' 
             help='Specify the PATH as seen from Windows Subsystem for Linux or Wine' 
-            value='/c/Program\ Files/DCS/3DCS_MC_8_0_0_2/dcsSimuMacro.exe'
+            value='wine /dcs/wine/apps/3dcs/.wine/drive_c/Program\ Files/DCS/3DCS_MC_8_0_0_2/dcsSimuMacro.exe'
         ></param>
         <param 
             name='resource' 
@@ -145,11 +175,23 @@
     </section>
     <section name='pwrl_002_merge_executor' type='section' title='Merge Executor' expanded='true'>
         <param 
+            name='monitoring_conda_dir' 
+            label='PW Conda Directory' 
+            type='hidden' 
+            value='__WORKDIR __/pw/miniconda'
+        ></param>
+        <param 
+            name='monitoring_conda_env' 
+            label='PW Conda Directory' 
+            type='hidden' 
+            value='psutil'
+        ></param>
+        <param 
             name='dcs_load' 
             label='Command to load DCS' 
             type='text' 
             help='To load the environment, enter the appropriate command, for example: module load module-name or source path/to/env.sh.' 
-            value=''
+            value='source /dcs/load-3dcs.sh'
             optional='true' 
         ></param>
         <param 
@@ -157,7 +199,7 @@
             label='Command to run DCS' 
             type='text' 
             help='Specify the PATH as seen from Windows Subsystem for Linux or Wine' 
-            value='/c/Program\ Files/DCS/3DCS_MC_8_0_0_2/dcsSimuMacro.exe'
+            value='wine /dcs/wine/apps/3dcs/.wine/drive_c/Program\ Files/DCS/3DCS_MC_8_0_0_2/dcsSimuMacro.exe'
         ></param>
         <param 
             name='resource' 
