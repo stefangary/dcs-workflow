@@ -4,6 +4,13 @@ cd $(dirname $0)
 source inputs.sh
 source workflow-libs.sh
 
+if [[ ${dcs_dry_run} == "true" ]]; then
+    echo "RUNNING THE WORKFLOW IN DRY RUN MODE"
+    mv dry_run.sh run_dcs.sh 
+else
+    rm dry_run.sh
+fi
+
 echo; echo; echo "MERGING RESULTS"
 pwd
 echo "    Writing job script"
@@ -45,7 +52,10 @@ fi
     
 if [ -z "${jobid}" ]; then
     echo "  ERROR: ${submit_cmd} ${submit_job_sh} failed"
+    cat ${PWD}/${case_dir}/logs_merge.out
     exit 1
 fi
 
 wait_job
+
+cat ${PWD}/${case_dir}/logs_merge.out

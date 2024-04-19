@@ -48,10 +48,29 @@ create_case(){
 
 }
 
+cat_slurm_logs() {
+    for f in  $(find ${resource_jobdir} -name logs_*.out); do
+	    echo; echo "Contents of ${f}:"
+	    cat ${f}
+    done
+	      
+}
+
+if [[ ${dcs_dry_run} == "true" ]]; then
+    echo "RUNNING THE WORKFLOW IN DRY RUN MODE"
+    unset monitoring_conda_dir monitoring_conda_env
+    echo > activate_monitoring.sh
+    echo > plot_monitoring.sh
+    echo > activate_monitoring.sh
+    mv dry_run.sh run_dcs.sh
+else
+    rm dry_run.sh
+fi
+
 # If no conda environment is specified for the CPU and Mem python monitoring utility
 # the workflow assumes monitoring is disabled
 if [ -z "${monitoring_conda_dir}" ] || [ -z "${monitoring_conda_env}" ]; then
-    echo "CPU and Memory monitoring are disabled".
+    echo "CPU and Memory monitoring are disabled"
     echo > activate_monitoring.sh
     echo > plot_monitoring.sh
 else
@@ -96,6 +115,7 @@ while true; do
     if [ -z "${submitted_jobs}" ]; then
         if [[ "${FAILED}" == "true" ]]; then
             echo "ERROR: Jobs [${FAILED_JOBS}] failed"
+            cat_slurm_logs
             exit 1
         fi
         echo "  All jobs are completed. Please check job logs in directories [${case_dirs}] and results"
@@ -118,7 +138,7 @@ while true; do
                     FAILED_JOBS="${job_id}, ${FAILED_JOBS}"
                     mv ${sj} ${sj}.failed
                 else
-                    echo "Job ${jobid} was completed"
+                    echo; echo "Job ${jobid} was completed"
                     mv ${sj} ${sj}.completed
                     case_dir=$(dirname ${sj} | sed "s|${PWD}/||g")
                 fi
@@ -139,3 +159,5 @@ done
 
 #echo; echo "TRANSFERRING RESULTS TO PW"
 #rsync -avzq ${PWD}/ usercontainer:${PW_RESOURCE_DIR}/
+
+cat_slurm_logs

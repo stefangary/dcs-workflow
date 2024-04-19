@@ -4,6 +4,15 @@
   <inputs>
       <section name='dcs' type='section' title='DCS Options' expanded='true'>
         <param 
+            name="dry_run" 
+            type="boolean" 
+            truevalue="Yes" 
+            falsevalue="No" 
+            checked="False" 
+            label="Dry run?" 
+            help='Dry run only generates the macroScript.txt file'  
+        ></param>
+        <param 
             name='analysis_type' 
             type='select' 
             label='Analysis Type' 
@@ -64,8 +73,8 @@
         <param 
             name="compliant" 
             type="boolean" 
-            truevalue="1" 
-            falsevalue="0" 
+            truevalue="Yes" 
+            falsevalue="No" 
             checked="False" 
             label="Load Compliant?" 
             help='load compliant or not'  
@@ -73,8 +82,8 @@
         <param 
             name="mechanical" 
             type="boolean" 
-            truevalue="1" 
-            falsevalue="0" 
+            truevalue="Yes" 
+            falsevalue="No" 
             checked="False" 
             label="load Mechanical AddIn?" 
             help='load Mechanical AddIn or not'  

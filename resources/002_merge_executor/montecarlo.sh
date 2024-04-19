@@ -3,6 +3,18 @@
 echo "Writing Macro File..."
 echo
 
+if [[ ${dcs_compliant} == "true" ]]; then
+    dcs_compliant=1
+else
+    dcs_compliant=0
+fi
+
+if [[ ${dcs_mechanical} == "true" ]]; then
+    dcs_mechanical=1
+else
+    dcs_mechanical=0
+fi
+
 in_name=$(basename ${dcs_model_file%.*})
 
 # Move results to common directory
@@ -18,8 +30,8 @@ cat > macroScript.txt <<END
 DCSVERS	200
 DCSMSSG	1  0 // 1st 0 MEANS print-msg is OFF; 2nd 0 MEANS using RELATIVE path
 DCSWORK .
-DCSCOMPLIANT  0 //load compliant or not: 0 -- not load; otherwise -- load
-DCSMECHANICAL  0 //load Mechanical AddIn or not: 0 -- not load; otherwise -- load
+DCSCOMPLIANT  ${dcs_compliant} //load compliant or not: 0 -- not load; otherwise -- load
+DCSMECHANICAL  ${dcs_mechanical} //load Mechanical AddIn or not: 0 -- not load; otherwise -- load
 DCSLOAD_CFG dcs4d.cfg
 
 //load a model (wtx) 
