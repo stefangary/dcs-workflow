@@ -3,18 +3,6 @@
 echo "Writing Macro File..."
 echo
 
-if [[ ${dcs_compliant} == "true" ]]; then
-    dcs_compliant=1
-else
-    dcs_compliant=0
-fi
-
-if [[ ${dcs_mechanical} == "true" ]]; then
-    dcs_mechanical=1
-else
-    dcs_mechanical=0
-fi
-
 in_name=$(basename ${dcs_model_file%.*})
 
 # Move results to common directory
@@ -30,16 +18,15 @@ cat > macroScript.txt <<END
 DCSVERS	200
 DCSMSSG	1  0 // 1st 0 MEANS print-msg is OFF; 2nd 0 MEANS using RELATIVE path
 DCSWORK .
-DCSCOMPLIANT  ${dcs_compliant} //load compliant or not: 0 -- not load; otherwise -- load
-DCSMECHANICAL  ${dcs_mechanical} //load Mechanical AddIn or not: 0 -- not load; otherwise -- load
+DCSCOMPLIANT 1
+DCSMECHANICAL 1
 DCSLOAD_CFG dcs4d.cfg
 
 //load a model (wtx) 
 DCSLOAD $in_name.wtx
 
 //merge results files (in Results folder)
-#DCS_MERGE_HST $num_runs merged.hst
-DCSSIMU_MERGE $num_runs merged.hst
+DCSSIMU_MERGE $num_runs ${in_name}.hst
 END
 
 # write the merge indices
@@ -47,6 +34,24 @@ for f in $(find . -name *.hst | grep Results); do
     echo "DCS_DATA $(basename $f)" >> macroScript.txt
 done
 
-echo >> macroScript.txt
-echo "DCSSIMU_LOAD merged" >> macroScript.txt
-echo "DCSREPORT_GEN 1 ./reports" >> macroScript.txt
+cat >> macroScript.txt <<END
+DCSSIMU_LOAD ${in_name}
+//Activating DCSREPORT_GEN breaks DCSSENS_SAVE
+//DCSREPORT_GEN 1 ./reports
+
+//save simu as rsh
+DCSSIMU_SAVE 1 ${in_name}_HST_RSLT
+//save simu as rel
+DCSSIMU_SAVE 2 ${in_name}_HST_RSLT
+//save simu as csv
+DCSSIMU_SAVE 3 ${in_name}_HST_RSLT
+//save simu as html
+DCSSIMU_SAVE 4 ${in_name}_HST_RSLT
+//save simu as raw
+DCSSIMU_SAVE 7 ${in_name}_HST_RSLT
+//save simu as cmmdev
+DCSSIMU_SAVE 8 ${in_name}_HST_RSLT
+//save simu as hsu
+DCSSIMU_SAVE 9 ${in_name} 
+END
+# End with empty line

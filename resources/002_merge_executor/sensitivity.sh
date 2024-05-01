@@ -3,18 +3,6 @@
 echo "Writing Macro File..."
 echo
 
-if [[ ${dcs_compliant} == "true" ]]; then
-    dcs_compliant=1
-else
-    dcs_compliant=0
-fi
-
-if [[ ${dcs_mechanical} == "true" ]]; then
-    dcs_mechanical=1
-else
-    dcs_mechanical=0
-fi
-
 in_name=$(basename ${dcs_model_file%.*})
 
 # Move results to common directory
@@ -30,13 +18,13 @@ cat > macroScript.txt <<END
 DCSVERS	200
 DCSMSSG	1  0 // 1st 0 MEANS print-msg is OFF; 2nd 0 MEANS using RELATIVE path
 DCSWORK .
-DCSCOMPLIANT  ${dcs_compliant} //load compliant or not: 0 -- not load; otherwise -- load
-DCSMECHANICAL  ${dcs_mechanical} //load Mechanical AddIn or not: 0 -- not load; otherwise -- load
+DCSCOMPLIANT 1
+DCSMECHANICAL 1
 
 //load a model (wtx) 
 DCSLOAD $in_name.wtx
 
-DCSSENS_MERGE $num_runs merged.hlm
+DCSSENS_MERGE $num_runs ${in_name}.hlm
 END
 
 # write the merge indices
@@ -44,6 +32,17 @@ for f in $(find . -name *.hlm | grep Results); do
     echo "DCS_DATA $(basename $f)" >> macroScript.txt
 done
 
-echo >> macroScript.txt
-echo "DCSSIMU_LOAD merged" >> macroScript.txt
-echo "DCSREPORT_GEN 1 ./reports" >> macroScript.txt
+cat >> macroScript.txt <<END
+DCSSENS_LOAD ${in_name}
+//Activating DCSREPORT_GEN breaks DCSSENS_SAVE
+//DCSREPORT_GEN 1 ./reports
+//DCSSENS ${in_name}
+
+//save sens as rss
+DCSSENS_SAVE 1 ${in_name}_HLM_RSLT
+//save sens as html
+DCSSENS_SAVE 2 ${in_name}_HLM_RSLT
+//save sens as StatRowCsv
+DCSSENS_SAVE 3 ${in_name}_HLM_RSLT
+END
+# End with empty line
