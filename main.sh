@@ -80,6 +80,7 @@ while true; do
 
     for sj in ${submitted_jobs}; do
         jobid=$(${sshcmd} cat ${sj})
+        echo "Job id ${jobid}"
       
         if [[ ${jobschedulertype} == "SLURM" ]]; then
             get_slurm_job_status
@@ -106,7 +107,7 @@ while true; do
                 case_dir=$(dirname ${sj} | sed "s|${PWD}/||g")
             fi
         fi
-
+        sleep 2
     done
     sleep 30
     submitted_jobs=$(${sshcmd} find ${resource_jobdir} -name job_id.submitted)
