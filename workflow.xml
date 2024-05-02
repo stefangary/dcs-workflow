@@ -87,7 +87,7 @@
         <param 
             name='dcs_load' 
             label='Command to load 3DCS' 
-            type='text' 
+            type='hidden' 
             help='To load the environment, enter the appropriate command, for example: module load module-name or source path/to/env.sh.' 
             value='source /dcs/load-3dcs.sh'
             optional='true' 
@@ -95,7 +95,7 @@
         <param 
             name='dcs_run' 
             label='Command to run 3DCS' 
-            type='text' 
+            type='hidden' 
             help='Specify the PATH as seen from Windows Subsystem for Linux or Wine' 
             value='wine /dcs/wine/apps/3dcs/.wine/drive_c/Program\ Files/DCS/3DCS_MC_8_0_0_2/dcsSimuMacro.exe'
         ></param>
@@ -132,15 +132,6 @@
             value='2'
         ></param>
         <param 
-            name='_sch__dd_nodes_e_' 
-            label='Number of Nodes' 
-            type='integer' 
-            min="1" 
-            max="2" 
-            help='--nodes=value slurm directive' 
-            value='1'
-        ></param>
-        <param 
             name='_sch__dd_time_e_' 
             label='Walltime' 
             type='text' 
@@ -159,7 +150,7 @@
         <param 
             name='workdir' 
             label='Shared Work Directory' 
-            type='text' 
+            type='hidden' 
             help='This directory must be shared between the compute and login nodes. This parameter overwrites the working directory in the resource definition page' 
             value='__WORKDIR__'
         ></param>
@@ -180,7 +171,7 @@
         <param 
             name='dcs_load' 
             label='Command to load DCS' 
-            type='text' 
+            type='hidden' 
             help='To load the environment, enter the appropriate command, for example: module load module-name or source path/to/env.sh.' 
             value='source /dcs/load-3dcs.sh'
             optional='true' 
@@ -188,7 +179,7 @@
         <param 
             name='dcs_run' 
             label='Command to run 3DCS' 
-            type='text' 
+            type='hidden' 
             help='Specify the PATH as seen from Windows Subsystem for Linux or Wine' 
             value='wine /dcs/wine/apps/3dcs/.wine/drive_c/Program\ Files/DCS/3DCS_MC_8_0_0_2/dcsSimuMacro.exe'
         ></param>
@@ -225,15 +216,6 @@
             value='2'
         ></param>
         <param 
-            name='_sch__dd_nodes_e_' 
-            label='Number of Nodes' 
-            type='integer' 
-            min="1" 
-            max="2" 
-            help='--nodes=value slurm directive' 
-            value='1'
-        ></param>
-        <param 
             name='_sch__dd_time_e_' 
             label='Walltime' 
             type='text' 
@@ -252,7 +234,7 @@
         <param 
             name='workdir' 
             label='Shared Work Directory' 
-            type='text' 
+            type='hidden' 
             help='This directory must be shared between the compute and login nodes. This parameter overwrites the working directory in the resource definition page' 
             value='__WORKDIR__'
         ></param>

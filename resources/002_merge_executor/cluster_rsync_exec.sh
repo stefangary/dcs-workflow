@@ -56,6 +56,5 @@ if [ -z "${jobid}" ]; then
     exit 1
 fi
 
-wait_job
-
-cat ${PWD}/${case_dir}/logs_merge.out
+echo ${jobid} > ${resource_jobdir}/job_id.submitted
+echo "${cancel_cmd} ${jobid}" >> ${resource_jobdir}/${resource_label}/cancel.sh

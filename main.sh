@@ -39,8 +39,102 @@ cp \
 
 cp ./workflow-utils/load_bucket_credentials_ssh.sh resources/002_merge_executor/
 
-# Run job on remote resource
-cluster_rsync_exec
+echo; echo; echo "PREPARING AND SUBMITTING 3DCS RUN JOBS"
+single_cluster_rsync_exec resources/001_simulation_executor/cluster_rsync_exec.sh
+return_code=$?
+if [ ${return_code} -ne 0 ]; then
+    ${sshcmd} ${resource_jobdir}/${resource_label}/cancel.sh
+    exit 1
+fi
 
-# Runs every cancel.sh script located on the remote resource directory
-cancel_jobs_by_script
+
+echo; echo; echo "WAITING FOR 3DCS RUN JOBS TO COMPLETE"
+source resources/001_simulation_executor/inputs.sh
+export sshcmd="ssh -o StrictHostKeyChecking=no ${resource_publicIp}"
+
+submitted_jobs=$(${sshcmd} find ${resource_jobdir} -name job_id.submitted)
+if [ -z "${submitted_jobs}" ]; then
+    echo "ERROR: No submitted jobs were found. Canceling workflow"
+    ${sshcmd} ${resource_jobdir}/${resource_label}/cancel.sh
+    exit 1
+fi
+
+echo "Submitted jobs found"
+echo ${submitted_jobs}
+
+while true; do
+    date
+
+    if [ -z "${submitted_jobs}" ]; then
+        if [[ "${FAILED}" == "true" ]]; then
+            echo "ERROR: Jobs [${FAILED_JOBS}] failed"
+            echo "Canceling jobs"
+            ${sshcmd} ${resource_jobdir}/${resource_label}/cancel.sh
+            exit 1
+        fi
+        echo "  All jobs are completed. Please check job logs in directories [${case_dirs}] and results"
+        break
+    fi
+
+    FAILED=false
+
+    for sj in ${submitted_jobs}; do
+        jobid=$(${sshcmd} cat ${sj})
+      
+        if [[ ${jobschedulertype} == "SLURM" ]]; then
+            get_slurm_job_status
+            # If job status is empty job is no longer running
+            if [ -z "${job_status}" ]; then
+                job_status=$($sshcmd sacct -j ${jobid}  --format=state | tail -n1)
+                if [[ "${job_status}" == *"FAILED"* ]]; then
+                    echo "ERROR: SLURM job [${jobid}] failed"
+                    FAILED=true
+                    FAILED_JOBS="${job_id}, ${FAILED_JOBS}"
+                    ${sshcmd} "mv ${sj} ${sj}.failed"
+                else
+                    echo; echo "Job ${jobid} was completed"
+                    ${sshcmd} "mv ${sj} ${sj}.completed"
+                    case_dir=$(dirname ${sj} | sed "s|${PWD}/||g")
+                fi
+            fi
+
+        elif [[ ${jobschedulertype} == "PBS" ]]; then
+            get_pbs_job_status
+            if [[ "${job_status}" == "C" || -z "${job_status}" ]]; then
+                echo "Job ${jobid} was completed"
+                ${sshcmd} "mv ${sj} ${sj}.completed"
+                case_dir=$(dirname ${sj} | sed "s|${PWD}/||g")
+            fi
+        fi
+
+    done
+    sleep 30
+    submitted_jobs=$(${sshcmd} find ${resource_jobdir} -name job_id.submitted)
+done
+
+if ! [ -z "${FAILED_JOBS}" ]; then
+    echo "ERROR: Failed jobs - ${FAILED_JOBS}. Exiting workflow"
+    exit 1
+fi
+
+
+echo; echo; echo "PREPARING AND SUBMITTING 3DCS MERGE JOBS"
+single_cluster_rsync_exec resources/002_merge_executor/cluster_rsync_exec.sh
+return_code=$?
+if [ ${return_code} -ne 0 ]; then
+    ./cancel.sh
+    exit 1
+fi
+
+
+echo; echo; echo "WAITING FOR 3DCS MERGE JOBS TO COMPLETE"
+source resources/002_merge_executor/inputs.sh
+export sshcmd="ssh -o StrictHostKeyChecking=no ${resource_publicIp}"
+
+export jobid=$(${sshcmd} cat ${resource_jobdir}/job_id.submitted)
+wait_job
+
+echo; echo; echo "ENSURING JOBS ARE CLEANED"
+./cancel.sh > /dev/null 2>&1 
+
+exit 0

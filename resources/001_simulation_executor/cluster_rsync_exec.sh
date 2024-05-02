@@ -103,61 +103,7 @@ for case_index in $(seq 1 ${dcs_concurrency}); do
         exit 1
     else
         echo "  Submitted job ${job_id}"
+        echo "${cancel_cmd} ${job_id}" >> ${resource_jobdir}/${resource_label}/cancel.sh
         echo ${job_id} > ${case_dir}/job_id.submitted
     fi
 done
-
-echo; echo "CHECKING JOBS STATUS"
-while true; do
-    date
-    submitted_jobs=$(find ${resource_jobdir} -name job_id.submitted)
-
-    if [ -z "${submitted_jobs}" ]; then
-        if [[ "${FAILED}" == "true" ]]; then
-            echo "ERROR: Jobs [${FAILED_JOBS}] failed"
-            cat_slurm_logs
-            exit 1
-        fi
-        echo "  All jobs are completed. Please check job logs in directories [${case_dirs}] and results"
-        break
-    fi
-
-    FAILED=false
-
-    for sj in ${submitted_jobs}; do
-        jobid=$(cat ${sj})
-      
-        if [[ ${jobschedulertype} == "SLURM" ]]; then
-            get_slurm_job_status
-            # If job status is empty job is no longer running
-            if [ -z "${job_status}" ]; then
-                job_status=$($sshcmd sacct -j ${jobid}  --format=state | tail -n1)
-                if [[ "${job_status}" == *"FAILED"* ]]; then
-                    echo "ERROR: SLURM job [${jobid}] failed"
-                    FAILED=true
-                    FAILED_JOBS="${job_id}, ${FAILED_JOBS}"
-                    mv ${sj} ${sj}.failed
-                else
-                    echo; echo "Job ${jobid} was completed"
-                    mv ${sj} ${sj}.completed
-                    case_dir=$(dirname ${sj} | sed "s|${PWD}/||g")
-                fi
-            fi
-
-        elif [[ ${jobschedulertype} == "PBS" ]]; then
-            get_pbs_job_status
-            if [[ "${job_status}" == "C" || -z "${job_status}" ]]; then
-                echo "Job ${jobid} was completed"
-                mv ${sj} ${sj}.completed
-                case_dir=$(dirname ${sj} | sed "s|${PWD}/||g")
-            fi
-        fi
-
-    done
-    sleep 30
-done
-
-#echo; echo "TRANSFERRING RESULTS TO PW"
-#rsync -avzq ${PWD}/ usercontainer:${PW_RESOURCE_DIR}/
-
-cat_slurm_logs
