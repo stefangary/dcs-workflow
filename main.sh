@@ -80,8 +80,7 @@ while true; do
 
     for sj in ${submitted_jobs}; do
         jobid=$(${sshcmd} cat ${sj})
-        echo "Job id ${jobid}"
-      
+              
         if [[ ${jobschedulertype} == "SLURM" ]]; then
             get_slurm_job_status
             # If job status is empty job is no longer running

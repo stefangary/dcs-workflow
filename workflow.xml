@@ -58,7 +58,7 @@
             label='Case Concurrency' 
             min='1' 
             max='100' 
-            value='10' 
+            value='2' 
             help='Number of workers used to run the simulations. A SLURM job is submitted for each worker.' 
         ></param>
         <param 
