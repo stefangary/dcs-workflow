@@ -10,7 +10,7 @@
             falsevalue="No" 
             checked="False" 
             label="Dry run?" 
-            help='Dry run only generates the macroScript.txt file'  
+            help='Dry run generates the macroScript.txt file and executes every step of the workflow except running 3DCS'  
         ></param>
         <param 
             name='analysis_type' 
