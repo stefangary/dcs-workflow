@@ -64,9 +64,9 @@
         <param 
             name='thread' 
             type='integer' 
-            label='Thread Number [1-4]' 
+            label='Thread Number [1-64]' 
             min='1' 
-            max='4' 
+            max='64' 
             value='1' 
             help='Number of threads used to run the simulation. Coincides with the number SLURM --ntasks-per-node parameter of the job'
         ></param>
