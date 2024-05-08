@@ -30,14 +30,14 @@
         ></param>
         <param 
             name='model_directory' 
-            label='Model Directory' 
+            label='Model Path' 
             type='text' 
             help='Directory within the bucket with the model and all the required files' 
             value=''
         ></param>
         <param 
             name='output_directory' 
-            label='Output Directory' 
+            label='Output Path' 
             type='text' 
             help='Output directory within the bucket to store outputs and logs. It cannot be inside the Model Directory!' 
             value=''
