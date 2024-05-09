@@ -2,7 +2,8 @@
 # A dynamicStorage parameter type would be very helpful for this
 
 # Copy path/to/simulation_<i> to bucket
-merged_results=$(ls Results/merged.*)
-aws s3 cp ${merged_results} s3://$BUCKET_NAME/${dcs_output_directory}/${USER}/${workflow_name}/${job_number}/${merged_results}
-aws s3 cp --recursive reports s3://$BUCKET_NAME/${dcs_output_directory}/${USER}/${workflow_name}/${job_number}/reports
+# Delete unmerged results
+rm Results/${in_name}_*.*
+
+aws s3 cp --recursive Results s3://$BUCKET_NAME/${dcs_output_directory}/${USER}/${workflow_name}/${job_number}/Results
 aws s3 cp --recursive TempData s3://$BUCKET_NAME/${dcs_output_directory}/${USER}/${workflow_name}/${job_number}/TempData
