@@ -35,7 +35,7 @@ create_case(){
     echo >> ${case_dir}/run_case.sh
     cat inputs.sh >> ${case_dir}/run_case.sh
     echo "export case_index=${case_index}" >> ${case_dir}/run_case.sh
-    exho "export dcs_model_file=${dcs_model_file}" >> ${case_dir}/run_case.sh
+    echo "export dcs_model_file=${dcs_model_file}" >> ${case_dir}/run_case.sh
     echo >> ${case_dir}/run_case.sh
 
     cat ${dcs_analysis_type}.sh >> ${case_dir}/run_case.sh
