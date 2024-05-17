@@ -45,8 +45,8 @@ else
     exit 1
 fi
 
-# Process WTX file
-python3 ./adapt_wtx_paths.py ${dcs_model_file}
+# Process WTX file to adapt the paths to the files
+python3 ../adapt_wtx_paths.py ${dcs_model_file}
 
 
 cd ..
