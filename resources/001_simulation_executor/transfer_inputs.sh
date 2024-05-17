@@ -46,3 +46,4 @@ else
 fi
 
 cd ..
+mv tmp-data-transfer/* .
