@@ -45,6 +45,10 @@ else
     exit 1
 fi
 
+# Process WTX file
+python3 ./adapt_wtx_paths.py ${dcs_model_file}
+
+
 cd ..
 mv tmp-data-transfer/* ${resource_jobdir}
 rmdir tmp-data-transfer

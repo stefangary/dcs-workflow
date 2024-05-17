@@ -58,8 +58,6 @@ cat_slurm_logs() {
 echo; echo; echo "STARTING INPUT DATA TRANSFER"
 source load_bucket_credentials_ssh.sh
 source transfer_inputs.sh
-python3 ./adapt_wtx_paths.py ${resource_jobdir}/${dcs_model_file} ${resource_jobdir}/${fea_dir}
-
 
 if [[ ${dcs_dry_run} == "true" ]]; then
     echo "RUNNING THE WORKFLOW IN DRY RUN MODE"
