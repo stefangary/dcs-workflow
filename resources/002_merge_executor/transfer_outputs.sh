@@ -1,7 +1,7 @@
 # HARDCODED TO AWS
 # A dynamicStorage parameter type would be very helpful for this
 
-# Copy path/to/simulation_<i> to bucket
+# Copy path/to/worker_<i> to bucket
 # Delete unmerged results
 rm -f Results/${in_name}_*.hst Results/${in_name}_*.hlm
 

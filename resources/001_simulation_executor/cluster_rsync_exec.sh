@@ -10,7 +10,7 @@ chmod +x cancel.sh
 create_case(){
     # The merge tasks syncs the results from an S3 bucket. To simplify the path to the
     # results in the S3 bucket ww use the resource job dir
-    case_dir=${resource_jobdir}/simulation_${case_index}
+    case_dir=${resource_jobdir}/worker_${case_index}
     mkdir -p ${case_dir}
 
     echo "    Writing job script"
@@ -35,10 +35,9 @@ create_case(){
     echo >> ${case_dir}/run_case.sh
     cat inputs.sh >> ${case_dir}/run_case.sh
     echo "export case_index=${case_index}" >> ${case_dir}/run_case.sh
+    echo "export dcs_model_file=${dcs_model_file}" >> ${case_dir}/run_case.sh
     echo >> ${case_dir}/run_case.sh
 
-    cat load_bucket_credentials_ssh.sh >> ${case_dir}/run_case.sh
-    cat transfer_inputs.sh >> ${case_dir}/run_case.sh
     cat ${dcs_analysis_type}.sh >> ${case_dir}/run_case.sh
     cat activate_monitoring.sh >> ${case_dir}/run_case.sh
     cat run_dcs.sh >> ${case_dir}/run_case.sh
@@ -55,6 +54,10 @@ cat_slurm_logs() {
     done
 	      
 }
+
+echo; echo; echo "STARTING INPUT DATA TRANSFER"
+source load_bucket_credentials_ssh.sh
+source transfer_inputs.sh
 
 if [[ ${dcs_dry_run} == "true" ]]; then
     echo "RUNNING THE WORKFLOW IN DRY RUN MODE"
@@ -86,8 +89,9 @@ done
 
 echo; echo; echo "SUBMITTING JOB SCRIPTS"
 for case_index in $(seq 1 ${dcs_concurrency}); do
-    case_dir=${resource_jobdir}/simulation_${case_index}
+    case_dir=${resource_jobdir}/worker_${case_index}
     echo; echo "  Case ${case_index}"
+    cp ${resource_jobdir}/${dcs_model_file} ${case_dir}
 
     submit_job_sh=${case_dir}/run_case.sh
     echo "  Job script ${submit_job_sh}"
