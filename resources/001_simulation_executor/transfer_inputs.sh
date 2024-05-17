@@ -46,4 +46,5 @@ else
 fi
 
 cd ..
-mv tmp-data-transfer/* .
+mv tmp-data-transfer/* ${resource_jobdir}
+rmdir tmp-data-transfer
