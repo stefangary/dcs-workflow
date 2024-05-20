@@ -48,6 +48,8 @@ fi
 # Process WTX file to adapt the paths to the files
 python3 ../adapt_wtx_paths.py ${dcs_model_file}
 
+# List all downloaded file
+find . -mindepth 1 > downloaded_files.txt
 
 cd ..
 mv tmp-data-transfer/* ${resource_jobdir}
