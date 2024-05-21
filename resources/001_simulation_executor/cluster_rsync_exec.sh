@@ -25,7 +25,7 @@ create_case(){
     fi
     
     # Main script
-    scratch_job_dir=$(echo ${case_dir} | sed "s|${resource_workdir}|/var|g")
+    scratch_job_dir=$(echo ${case_dir} | sed "s|${resource_workdir}|/tmp|g")
 
     echo "mkdir -p ${scratch_job_dir}" >> ${case_dir}/run_case.sh
     echo "cd ${scratch_job_dir}" >> ${case_dir}/run_case.sh
