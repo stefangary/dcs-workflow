@@ -29,7 +29,6 @@ create_case(){
 
     echo "mkdir -p ${scratch_job_dir}" >> ${case_dir}/run_case.sh
     echo "cd ${scratch_job_dir}" >> ${case_dir}/run_case.sh
-    echo "ln -s ${scratch_job_dir} ${case_dir}_scratch" >> ${case_dir}/run_case.sh
     
     # FIXME: This is needed because run directory is not shared between controller and compute nodes
     #echo "rsync -avzq ${resource_privateIp}:${case_dir}/ ."  >> ${case_dir}/run_case.sh
