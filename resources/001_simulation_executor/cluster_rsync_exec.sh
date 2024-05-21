@@ -25,8 +25,11 @@ create_case(){
     fi
     
     # Main script
-    echo "mkdir -p ${case_dir}" >> ${case_dir}/run_case.sh
-    echo "cd ${case_dir}" >> ${case_dir}/run_case.sh
+    scratch_job_dir=$(echo ${case_dir} | sed "s|${resource_workdir}|/var|g")
+
+    echo "mkdir -p ${scratch_job_dir}" >> ${case_dir}/run_case.sh
+    echo "cd ${scratch_job_dir}" >> ${case_dir}/run_case.sh
+    echo "ln -s ${scratch_job_dir} ${case_dir}" >> ${case_dir}/run_case.sh
     
     # FIXME: This is needed because run directory is not shared between controller and compute nodes
     #echo "rsync -avzq ${resource_privateIp}:${case_dir}/ ."  >> ${case_dir}/run_case.sh
@@ -35,9 +38,10 @@ create_case(){
     echo >> ${case_dir}/run_case.sh
     cat inputs.sh >> ${case_dir}/run_case.sh
     echo "export case_index=${case_index}" >> ${case_dir}/run_case.sh
-    echo "export dcs_model_file=${dcs_model_file}" >> ${case_dir}/run_case.sh
     echo >> ${case_dir}/run_case.sh
 
+    cat load_bucket_credentials_ssh.sh >> ${case_dir}/run_case.sh 
+    cat transfer_inputs.sh >> ${case_dir}/run_case.sh
     cat ${dcs_analysis_type}.sh >> ${case_dir}/run_case.sh
     cat activate_monitoring.sh >> ${case_dir}/run_case.sh
     cat run_dcs.sh >> ${case_dir}/run_case.sh
@@ -54,10 +58,6 @@ cat_slurm_logs() {
     done
 	      
 }
-
-echo; echo; echo "STARTING INPUT DATA TRANSFER"
-source load_bucket_credentials_ssh.sh
-source transfer_inputs.sh
 
 if [[ ${dcs_dry_run} == "true" ]]; then
     echo "RUNNING THE WORKFLOW IN DRY RUN MODE"

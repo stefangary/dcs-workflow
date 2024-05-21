@@ -52,5 +52,5 @@ python3 ../adapt_wtx_paths.py ${dcs_model_file}
 find . -mindepth 1 > downloaded_files.txt
 
 cd ..
-mv tmp-data-transfer/* ${resource_jobdir}
+mv tmp-data-transfer/* .
 rmdir tmp-data-transfer
