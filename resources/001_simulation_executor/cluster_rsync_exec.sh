@@ -29,7 +29,7 @@ create_case(){
 
     echo "mkdir -p ${scratch_job_dir}" >> ${case_dir}/run_case.sh
     echo "cd ${scratch_job_dir}" >> ${case_dir}/run_case.sh
-    echo "ln -s ${scratch_job_dir} ${case_dir}" >> ${case_dir}/run_case.sh
+    echo "ln -s ${scratch_job_dir} ${case_dir}_scratch" >> ${case_dir}/run_case.sh
     
     # FIXME: This is needed because run directory is not shared between controller and compute nodes
     #echo "rsync -avzq ${resource_privateIp}:${case_dir}/ ."  >> ${case_dir}/run_case.sh
@@ -45,6 +45,7 @@ create_case(){
     cat ${dcs_analysis_type}.sh >> ${case_dir}/run_case.sh
     cat activate_monitoring.sh >> ${case_dir}/run_case.sh
     cat run_dcs.sh >> ${case_dir}/run_case.sh
+    cat clean_job_directory.sh >> ${case_dir}/run_case.sh
     cat plot_monitoring.sh >> ${case_dir}/run_case.sh
     cat load_bucket_credentials_ssh.sh >> ${case_dir}/run_case.sh
     cat transfer_outputs.sh >> ${case_dir}/run_case.sh
