@@ -76,7 +76,7 @@
             name='monitoring_conda_dir' 
             label='PW Conda Directory' 
             type='hidden' 
-            value='__WORKDIR__/pw/miniconda'
+            value='/dcs/pw/miniconda'
         ></param>
         <param 
             name='monitoring_conda_env' 
@@ -160,7 +160,7 @@
             name='monitoring_conda_dir' 
             label='PW Conda Directory' 
             type='hidden' 
-            value='__WORKDIR __/pw/miniconda'
+            value='/dcs/pw/miniconda'
         ></param>
         <param 
             name='monitoring_conda_env' 
