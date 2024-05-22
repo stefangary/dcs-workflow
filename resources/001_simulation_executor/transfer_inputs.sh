@@ -48,9 +48,11 @@ fi
 # Process WTX file to adapt the paths to the files
 python3 ../adapt_wtx_paths.py ${dcs_model_file}
 if [ $? -ne 0 ]; then
-  echo; echo "ERROR: Failed to process WTX file with adapt_wtx_paths.py"
-  rm -rf *
-  exit 1
+    echo; echo "ERROR: Failed to process WTX file with adapt_wtx_paths.py"
+    if ! [[ ${dcs_dry_run} == "true" ]]; then
+      rm -rf *
+    fi
+    exit 1
 fi
 
 # List all downloaded file
