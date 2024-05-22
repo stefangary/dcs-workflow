@@ -1,6 +1,9 @@
 import os
 import sys
 
+wtx_file_path = sys.argv[1]
+fea_dir = sys.argv[2].replace('/','')
+
 def replace_between_angle_brackets(input_string, replacement):
     """
     Replaces anything between '>' and '<' in the given string with the specified replacement text.
@@ -30,7 +33,8 @@ def get_search_file_paths(file_paths):
     :param file_paths: List of file paths.
     :return: List of search patterns for the file paths.
     """
-    return ['\\'.join(file_path.split('/')) for file_path in file_paths]
+    #return ['\\'.join(file_path.split('/')) for file_path in file_paths]
+    return [os.path.basename(file_path) for file_path in file_paths]
 
 def process_wtx_file(wtx_file_path, search_file_paths):
     """
@@ -45,7 +49,7 @@ def process_wtx_file(wtx_file_path, search_file_paths):
         for line in wtx_file:
             for file_path in search_file_paths:
                 if file_path in line:
-                    line = replace_between_angle_brackets(line, '..\\' + file_path)
+                    line = replace_between_angle_brackets(line, '..\\' + fea_dir + '\\' + file_path)
             new_wtx_file_lines.append(line)
     return new_wtx_file_lines
 
