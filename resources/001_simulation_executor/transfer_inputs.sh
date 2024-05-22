@@ -55,11 +55,12 @@ while true; do
 	    if [ ${retries} -gt 0 ]; then
 	        sleep 10
 	    else
-            echo; echo "ERROR: Failed to process WTX file with adapt_wtx_paths.py"
-            if ! [[ ${dcs_dry_run} == "true" ]]; then
-                rm -rf *
-            fi
-            exit 1
+            echo; echo "ERROR: Failed to process WTX file with adapt_wtx_paths.py"  >&2
+            #if ! [[ ${dcs_dry_run} == "true" ]]; then
+            #    rm -rf *
+            #fi
+            #exit 1
+            break
 	    fi
     else
 	    break
