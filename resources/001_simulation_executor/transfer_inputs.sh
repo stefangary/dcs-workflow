@@ -66,7 +66,7 @@ while true; do
     fi
 done
 
-python3 ../adapt_wtx_paths.py ${dcs_model_file}
+python3 ../adapt_wtx_paths.py ${dcs_model_file} ${fea_dir}
 if [ $? -ne 0 ]; then
     echo; echo "ERROR: Failed to process WTX file with adapt_wtx_paths.py"
     if ! [[ ${dcs_dry_run} == "true" ]]; then
@@ -79,5 +79,5 @@ fi
 find . -mindepth 1 > downloaded_files.txt
 
 cd ..
-mv tmp-data-transfer/* ${resource_jobdir} ${fea_dir}
+mv tmp-data-transfer/* ${resource_jobdir}
 rmdir tmp-data-transfer
