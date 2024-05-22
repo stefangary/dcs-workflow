@@ -48,7 +48,7 @@ fi
 # Process WTX file to adapt the paths to the files
 retries=5
 while true; do
-    python3 ../adapt_wtx_paths.py ${dcs_model_file}
+    python3 ../adapt_wtx_paths.py ${dcs_model_file} ${fea_dir}
     exit_code=$?
     if [ ${exit_code} -ne 0 ]; then
 	    retries=$((retries-1))
@@ -65,15 +65,6 @@ while true; do
 	    break
     fi
 done
-
-python3 ../adapt_wtx_paths.py ${dcs_model_file} ${fea_dir}
-if [ $? -ne 0 ]; then
-    echo; echo "ERROR: Failed to process WTX file with adapt_wtx_paths.py"
-    if ! [[ ${dcs_dry_run} == "true" ]]; then
-      rm -rf *
-    fi
-    exit 1
-fi
 
 # List all downloaded file
 find . -mindepth 1 > downloaded_files.txt
