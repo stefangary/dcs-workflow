@@ -25,7 +25,6 @@
         <param name='bucket_id' 
             label='Bucket ID or namespace' 
             type='text' 
-            value='[bucket-owner]/[bucket-name]' 
             help='Type in the bucket ID string or namespace in the format [bucket-owner]/[bucket-name]' 
         ></param>
         <param 
@@ -33,7 +32,6 @@
             label='Model Path' 
             type='text' 
             help='Directory within the bucket with the model and all the required files' 
-            value=''
         ></param>
         <param 
             name='output_directory' 
