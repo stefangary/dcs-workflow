@@ -40,7 +40,6 @@
             label='Output Path' 
             type='text' 
             help='Output directory within the bucket to store outputs and logs. It cannot be inside the Model Directory!' 
-            value=''
         ></param>
         <param 
             name='num_seeds' 
