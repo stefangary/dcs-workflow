@@ -147,9 +147,9 @@
         <param 
             name='workdir' 
             label='Shared Work Directory' 
-            type='hidden' 
+            type='text' 
             help='This directory must be shared between the compute and login nodes. This parameter overwrites the working directory in the resource definition page' 
-            value='__WORKDIR__'
+            value='/run-3dcs/'
         ></param>
     </section>
     <section name='pwrl_002_merge_executor' type='section' title='Merge Executor' expanded='true'>
@@ -231,9 +231,9 @@
         <param 
             name='workdir' 
             label='Shared Work Directory' 
-            type='hidden' 
+            type='text' 
             help='This directory must be shared between the compute and login nodes. This parameter overwrites the working directory in the resource definition page' 
-            value='__WORKDIR__'
+            value='/run-3dcs/'
         ></param>
     </section>
     </inputs>
