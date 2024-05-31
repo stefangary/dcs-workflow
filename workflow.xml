@@ -113,11 +113,9 @@
         <param 
             name='_sch__dd_partition_e_' 
             label='SLURM partition' 
-            type='dynamicPartitionDropdown' 
-            resource='pwrl_001_simulation_executor.resource'
+            type='text' 
+            value='compute'
             help='Partition to submit the interactive job. Leave empty to let SLURM pick the optimal option.' 
-            optional='true'
-            dependent='false'
         ></param>
         <param 
             name='_sch__dd_ntasks_d_per_d_node_e_' 
@@ -147,9 +145,9 @@
         <param 
             name='workdir' 
             label='Shared Work Directory' 
-            type='hidden' 
+            type='text' 
             help='This directory must be shared between the compute and login nodes. This parameter overwrites the working directory in the resource definition page' 
-            value='__WORKDIR__'
+            value='/run-3dcs/'
         ></param>
     </section>
     <section name='pwrl_002_merge_executor' type='section' title='Merge Executor' expanded='true'>
@@ -197,11 +195,9 @@
         <param 
             name='_sch__dd_partition_e_' 
             label='SLURM partition' 
-            type='dynamicPartitionDropdown' 
-            resource='pwrl_002_merge_executor.resource'
+            type='text' 
+            value='compute'
             help='Partition to submit the interactive job. Leave empty to let SLURM pick the optimal option.' 
-            optional='true'   
-            dependent='false'
         ></param>
         <param 
             name='_sch__dd_ntasks_d_per_d_node_e_' 
@@ -231,9 +227,9 @@
         <param 
             name='workdir' 
             label='Shared Work Directory' 
-            type='hidden' 
+            type='text' 
             help='This directory must be shared between the compute and login nodes. This parameter overwrites the working directory in the resource definition page' 
-            value='__WORKDIR__'
+            value='/run-3dcs/'
         ></param>
     </section>
     </inputs>
