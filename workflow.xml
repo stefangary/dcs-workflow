@@ -110,14 +110,16 @@
             value='SLURM' 
         >
         </param>
-        <param 
-            name='_sch__dd_partition_e_' 
-            label='SLURM partition' 
-            type='text' 
-            value='compute'
-            help='Partition to submit the interactive job. Leave empty to let SLURM pick the optimal option.' 
-        ></param>
-        <param 
+       <param
+           name='_sch__dd_partition_e_'
+           label='SLURM partition'
+           type='dynamicPartitionDropdown'
+           resource='pwrl_001_simulation_executor.resource'
+           help='Partition to submit the interactive job. Leave empty to let SLURM pick the optimal option.'
+           optional='true'  
+           dependent='false'
+       ></param>
+       <param 
             name='_sch__dd_ntasks_d_per_d_node_e_' 
             label='Tasks per Node' 
             type='integer' 
@@ -192,12 +194,14 @@
             value='SLURM' 
         >
         </param>
-        <param 
-            name='_sch__dd_partition_e_' 
-            label='SLURM partition' 
-            type='text' 
-            value='compute'
-            help='Partition to submit the interactive job. Leave empty to let SLURM pick the optimal option.' 
+        <param
+           name='_sch__dd_partition_e_'
+           label='SLURM partition'
+           type='dynamicPartitionDropdown'
+           resource='pwrl_002_merge_executor.resource'
+           help='Partition to submit the interactive job. Leave empty to let SLURM pick the optimal option.'
+           optional='true'  
+           dependent='false'
         ></param>
         <param 
             name='_sch__dd_ntasks_d_per_d_node_e_' 
