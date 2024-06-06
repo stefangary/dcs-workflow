@@ -61,11 +61,11 @@
         <param 
             name='thread' 
             type='integer' 
-            label='Thread Number [1-64]' 
+            label='Number of Threads per Worker' 
             min='1' 
             max='64' 
             value='1' 
-            help='Number of threads used to run the simulation. Coincides with the number SLURM --ntasks-per-node parameter of the job'
+            help='Number of threads used to run the simulation. Be aware that N threads require more than N times the memory needed for a single thread.'
         ></param>
     </section>
     <section name='pwrl_001_simulation_executor' type='section' title='Simulation Executor' expanded='true'>
