@@ -198,13 +198,13 @@ def process_worker_files(worker_files, allocation_used):
         logger.info(f'Processing file {worker_file}.')
         # Each line is a time stamp
         number_of_lines = count_lines_in_file(worker_file)
-        print(number_of_lines)
         if number_of_lines > CONNECTED_WORKERS[worker_file_name]:
             CONNECTED_WORKERS[worker_file_name] = number_of_lines
         elif number_of_lines > 1:
             logger.info(f'Worker {worker_file_name} disconnected.')
             used_hours = process_worker_file(worker_file)
             cached_usage += used_hours
+            del CONNECTED_WORKERS[worker_file_name]
             # Update allocation used HERE to include worker information
     
     if cached_usage > 0:
