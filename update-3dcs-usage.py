@@ -40,7 +40,7 @@ PW_PLATFORM_HOST = os.environ.get('PW_PLATFORM_HOST')
 PW_API_KEY = os.environ.get('PW_API_KEY')
 HEADERS = {"Authorization": "Basic {}".format(encode_string_to_base64(os.environ['PW_API_KEY']))}
 
-GROUP_NAME: str = 'dcsdemo'
+GROUP_NAME: str = '3dcs-run-hours'
 ORGANIZATION_URL: str = f'https://{PW_PLATFORM_HOST}/api/v2/organization/teams?organization={CUSTOMER_ORG_ID}'
 
 CONNECTED_WORKERS = {}
