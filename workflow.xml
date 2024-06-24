@@ -21,6 +21,7 @@
             truevalue="Yes" 
             falsevalue="No" 
             checked="False" 
+            value="false"
             label="Dry run?" 
             help='Dry run generates the macroScript.txt file and executes every step of the workflow except running 3DCS'  
         ></param>
