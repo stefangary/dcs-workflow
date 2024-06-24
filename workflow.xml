@@ -2,6 +2,18 @@
   <command interpreter='bash'>main.sh</command>
   <cancel interpreter='bash'>cancel.sh</cancel>
   <inputs>
+    <param 
+        name='metering_user' 
+        label='metering_user' 
+        type='hidden' 
+        value='honda'  
+    ></param>
+    <param 
+        name='metering_ip' 
+        label='metering_ip' 
+        type='hidden' 
+        value='34.132.102.65'  
+    ></param>
 <section name='dcs' type='section' title='3DCS Options' expanded='true'>
         <param 
             name="dry_run" 
