@@ -9,9 +9,8 @@ fi
 # Create metering script
 cat >> metering.sh <<HERE
 #!/bin/bash
-metering_filename=$(hostname)-${job_number}
 while true; do
-    ssh ${resource_ssh_usercontainer_options} usercontainer ssh ${metering_user}@${metering_ip} "date" >> ~/.3dcs/usage-pending/
+    ssh ${resource_ssh_usercontainer_options} usercontainer ssh ${metering_user}@${metering_ip} "date" >> ~/.3dcs/usage-pending/$(hostname)-${job_number}
     sleep 60
 done
 HERE
