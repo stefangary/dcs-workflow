@@ -10,7 +10,7 @@ fi
 cat >> metering.sh <<HERE
 #!/bin/bash
 while true; do
-    ssh ${resource_ssh_usercontainer_options} usercontainer ssh ${metering_user}@${metering_ip} "date" >> ~/.3dcs/usage-pending/$(hostname)-${job_number}
+    ssh ${resource_ssh_usercontainer_options} usercontainer ssh ${metering_user}@${metering_ip} "date" >> /home/${metering_user}/.3dcs/usage-pending/$(hostname)-${job_number}
     sleep 60
 done
 HERE
