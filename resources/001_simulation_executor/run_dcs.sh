@@ -15,7 +15,7 @@ while true; do
 done
 HERE
 
-chmod + metering.sh
+chmod +x metering.sh
 ./metering.sh &
 metering_pid=$!
 
