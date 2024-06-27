@@ -21,7 +21,7 @@ This workflow enables running a 3DCS Monte Carlo or contributor analysis job usi
 
 ![Sample Configuration](https://github.com/parallelworks/dcs-workflow/blob/main/2-Nodes_4-Workers_2-Threads_Per_Worker_Configuration.png)
 
-![Sample Configuration](![Sample Configuration](https://raw.githubusercontent.com/parallelworks/dcs-workflow/main/2-Nodes_4-Workers_2-Threads_Per_Worker_Configuration.png))
+[Sample Configuration](https://raw.githubusercontent.com/parallelworks/dcs-workflow/main/2-Nodes_4-Workers_2-Threads_Per_Worker_Configuration.png)
 
 ### 5. Merging Results
 - A final job merges the results using the resource defined in the merge executor section of the input form.
