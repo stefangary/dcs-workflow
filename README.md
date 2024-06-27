@@ -19,8 +19,6 @@ This workflow enables running a 3DCS Monte Carlo or contributor analysis job usi
 - To reduce compute costs, estimate the required memory for a single worker and maximize memory utilization by fitting as many workers as possible on a single node.
 - Required memory for N workers is N times the memory for a single worker. However, the required memory for N threads is more than N times the memory for a single thread.
 
-![Sample Configuration](https://github.com/parallelworks/dcs-workflow/blob/main/2-Nodes_4-Workers_2-Threads_Per_Worker_Configuration.png)
-
 ![Sample Configuration](https://raw.githubusercontent.com/parallelworks/dcs-workflow/main/2-Nodes_4-Workers_2-Threads_Per_Worker_Configuration.png)
 
 ### 5. Merging Results
