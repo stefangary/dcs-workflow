@@ -35,6 +35,7 @@ DCS_PROCESSED_USAGE_DIR = os.path.join(DCS_DIR, 'usage-processed')
 os.makedirs(DCS_PROCESSED_USAGE_DIR, exist_ok=True)
 LOCK_FILE_PATH = os.path.join(DCS_DIR, 'update-3dcs-usage.lock')
 
+# See https://cloud.parallel.works/api/v2/organization
 CUSTOMER_ORG_ID = '63572a4c1129281e00477a0c'
 PW_PLATFORM_HOST = os.environ.get('PW_PLATFORM_HOST')
 PW_API_KEY = os.environ.get('PW_API_KEY')
