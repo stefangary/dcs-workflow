@@ -28,7 +28,7 @@ def encode_string_to_base64(text):
 
 # The sleep time must be large enough for the workers to report the next heartbeat 
 SLEEP_TIME: int = 120
-DCS_DIR: str = '/pw/.3dcs/'
+DCS_DIR: str = os.path.expanduser('~/.3dcs/')
 DCS_PENDING_USAGE_DIR = os.path.join(DCS_DIR, 'usage-pending')
 os.makedirs(DCS_PENDING_USAGE_DIR, exist_ok=True)
 DCS_PROCESSED_USAGE_DIR = os.path.join(DCS_DIR, 'usage-processed')
@@ -128,8 +128,8 @@ def calculate_time_difference(file_path):
     last_time_str = lines[-1].strip()
     
     # Define the datetime format
-    time_format = '%a %b %d %I:%M:%S %p %Z %Y'
-    
+    #time_format = '%a %b %d %I:%M:%S %p %Z %Y'
+    time_format = '%a %b %d %H:%M:%S %Z %Y'
     # Convert strings to datetime objects
     first_time = datetime.strptime(first_time_str, time_format)
     last_time = datetime.strptime(last_time_str, time_format)
@@ -201,11 +201,16 @@ def process_worker_files(worker_files, allocation_used):
         if number_of_lines > CONNECTED_WORKERS[worker_file_name]:
             CONNECTED_WORKERS[worker_file_name] = number_of_lines
         elif number_of_lines > 1:
-            logger.info(f'Worker {worker_file_name} disconnected.')
+            logger.info(f'Worker {worker_file_name} disconnected after {number_of_lines} heartbeats.')
             used_hours = process_worker_file(worker_file)
             cached_usage += used_hours
             del CONNECTED_WORKERS[worker_file_name]
             # Update allocation used HERE to include worker information
+        else:
+            logger.info(f'Worker {worker_file_name} disconnected after {number_of_lines} heartbeats. Assuming 30 seconds connection.')
+            processed_worker_file = move_pending_file_to_processed(worker_file)
+            cached_usage += 0.00833
+            del CONNECTED_WORKERS[worker_file_name]
     
     if cached_usage > 0:
         allocation_used += cached_usage
@@ -240,7 +245,7 @@ group_id = group_info['id']
 # Keep the script running to hold the lock
 try:
     while True:
-        time.sleep(20)
+        time.sleep(SLEEP_TIME)
         worker_files = list_files_in_directory(DCS_PENDING_USAGE_DIR)
         if worker_files:
             logger.info('Found worker files ' + ' '.join(worker_files))
