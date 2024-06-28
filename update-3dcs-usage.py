@@ -10,7 +10,7 @@ import logging
 import shutil
 
 """
-3DCS workers periodically write timestamps to files named <hostname>-<slurm-job-id>-<pw-job-id> 
+3DCS workers periodically write timestamps to files named <hostname>-<pw-job-id> 
 in the DCS_PENDING_USAGE_DIR. This script processes each file in this directory, assuming the 
 worker has stopped if no new timestamps are reported. It calculates the worker's runtime in hours 
 and updates the group's allocation usage accordingly. This script runs on a centralized machine 
