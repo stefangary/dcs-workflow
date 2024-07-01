@@ -117,6 +117,11 @@ if ! [ -z "${FAILED_JOBS}" ]; then
     exit 1
 fi
 
+# FIXME: We should run a different macroScript to produce the plots and data
+if [ "${dcs_concurrency}" -eq 1 ]; then
+    echo "Merge job is not running because the number of workers is 1. Exiting workflow."
+    exit 0
+fi
 
 echo; echo; echo "PREPARING AND SUBMITTING 3DCS MERGE JOBS"
 single_cluster_rsync_exec resources/002_merge_executor/cluster_rsync_exec.sh
