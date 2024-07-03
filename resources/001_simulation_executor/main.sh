@@ -2,6 +2,7 @@
 cd $(dirname $0)
 
 source inputs.sh
+source ${resource_jobdir}/dcs_inputs.sh
 source workflow-libs.sh
 
 echo '#!/bin/bash' > cancel.sh
@@ -55,9 +56,6 @@ cat_slurm_logs() {
 	      
 }
 
-echo; echo; echo "STARTING INPUT DATA TRANSFER"
-source load_bucket_credentials_ssh.sh
-source transfer_inputs.sh
 
 if [[ ${dcs_dry_run} == "true" ]]; then
     echo "RUNNING THE WORKFLOW IN DRY RUN MODE"

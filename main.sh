@@ -39,8 +39,25 @@ cp \
 
 cp ./workflow-utils/load_bucket_credentials_ssh.sh resources/002_merge_executor/
 
+echo; echo; echo "STARTING INPUT DATA TRANSFER"
+source resources/001_simulation_executor/inputs.sh
+echo '!#/bin/bash' > transfer_inputs.sh
+echo "cd ${resource_jobdir}" >> transfer_inputs.sh
+cat resources/001_simulation_executor/inputs.sh >> transfer_inputs.sh
+cat resources/001_simulation_executor/load_bucket_credentials_ssh.sh >> transfer_inputs.sh
+cat resources/001_simulation_executor/transfer_inputs.sh >> transfer_inputs.sh
+# Create metering script
+cat >> transfer_inputs.sh <<HERE
+echo \${dcs_model_file} > dcs_inputs.sh
+echo \${fea_dir} >> dcs_inputs.sh
+HERE
+chmod +x transfer_inputs.sh
+
+ssh -o StrictHostKeyChecking=no ${resource_publicIp} 'bash -s' < transfer_inputs.sh
+
+
 echo; echo; echo "PREPARING AND SUBMITTING 3DCS RUN JOBS"
-single_cluster_rsync_exec resources/001_simulation_executor/cluster_rsync_exec.sh
+single_cluster_rsync_exec resources/001_simulation_executor/main.sh
 return_code=$?
 if [ ${return_code} -ne 0 ]; then
     ${sshcmd} ${resource_jobdir}/${resource_label}/cancel.sh
@@ -124,7 +141,7 @@ if [ "${dcs_concurrency}" -eq 1 ]; then
 fi
 
 echo; echo; echo "PREPARING AND SUBMITTING 3DCS MERGE JOBS"
-single_cluster_rsync_exec resources/002_merge_executor/cluster_rsync_exec.sh
+single_cluster_rsync_exec resources/002_merge_executor/main.sh
 return_code=$?
 if [ ${return_code} -ne 0 ]; then
     ./cancel.sh
