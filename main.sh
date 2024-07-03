@@ -45,7 +45,7 @@ echo '#!/bin/bash' > transfer_inputs.sh
 echo "mkdir -p ${resource_jobdir}" >> transfer_inputs.sh
 echo "cd ${resource_jobdir}" >> transfer_inputs.sh
 cat resources/001_simulation_executor/inputs.sh >> transfer_inputs.sh
-cat resources/001_simulation_executor/load_bucket_credentials_ssh.sh >> transfer_inputs.sh
+${pw_job_dir}/workflow-utils/bucket_token_generator.py --bucket_id ${dcs_bucket_id} --token_format text >> transfer_inputs.sh
 cat resources/001_simulation_executor/transfer_inputs.sh >> transfer_inputs.sh
 # Create metering script
 cat >> transfer_inputs.sh <<HERE
