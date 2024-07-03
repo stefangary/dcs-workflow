@@ -41,7 +41,8 @@ cp ./workflow-utils/load_bucket_credentials_ssh.sh resources/002_merge_executor/
 
 echo; echo; echo "STARTING INPUT DATA TRANSFER"
 source resources/001_simulation_executor/inputs.sh
-echo '!#/bin/bash' > transfer_inputs.sh
+echo '#!/bin/bash' > transfer_inputs.sh
+echo "mkdir -p ${resource_jobdir}" >> transfer_inputs.sh
 echo "cd ${resource_jobdir}" >> transfer_inputs.sh
 cat resources/001_simulation_executor/inputs.sh >> transfer_inputs.sh
 cat resources/001_simulation_executor/load_bucket_credentials_ssh.sh >> transfer_inputs.sh
