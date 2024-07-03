@@ -49,6 +49,7 @@ ${pw_job_dir}/workflow-utils/bucket_token_generator.py --bucket_id ${dcs_bucket_
 cat resources/001_simulation_executor/transfer_inputs.sh >> transfer_inputs.sh
 # Create metering script
 cat >> transfer_inputs.sh <<HERE
+
 echo \${dcs_model_file} > dcs_inputs.sh
 echo \${fea_dir} >> dcs_inputs.sh
 HERE
