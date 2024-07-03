@@ -48,7 +48,7 @@ fi
 # Process WTX file to adapt the paths to the files
 retries=5
 while true; do
-    python3 ../adapt_wtx_paths.py ${dcs_model_file} ${fea_dir}
+    python3 ${resource_jobdir}/${resource_label}/adapt_wtx_paths.py ${dcs_model_file} ${fea_dir}
     exit_code=$?
     if [ ${exit_code} -ne 0 ]; then
 	    retries=$((retries-1))
