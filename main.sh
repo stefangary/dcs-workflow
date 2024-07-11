@@ -34,6 +34,8 @@ if [ -z "${metering_user}" ]; then
     echo "Error: Could not obtain the name of the organization of user ${PW_USER}. Exiting."
     exit 1
 fi
+sed -i "s/__metering_user__/${metering_user}/g" inputs.sh
+sed -i "s/__metering_user__/${metering_user}/g" inputs.json
 
 conda activate
 python3 ./workflow-utils/input_form_resource_wrapper.py 

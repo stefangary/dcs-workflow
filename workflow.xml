@@ -3,6 +3,12 @@
   <cancel interpreter='bash'>cancel.sh</cancel>
   <inputs>
     <param 
+        name='metering_user' 
+        label='metering_user' 
+        type='hidden' 
+        value='__metering_user__'  
+    ></param>
+    <param 
         name='metering_ip' 
         label='metering_ip' 
         type='hidden' 
