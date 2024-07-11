@@ -2,6 +2,7 @@
 source inputs.sh
 # Replace __dcs_version__ with the value of dcs_version in inputs.sh
 sed -i "s/__dcs_version__/${dcs_version}/g" inputs.sh
+sed -i "s/__dcs_version__/${dcs_version}/g" inputs.json
 
 
 if [[ "${dcs_output_directory}" == "${dcs_model_directory}" || "${dcs_output_directory}" == "${dcs_model_directory}/"* ]]; then
