@@ -24,7 +24,7 @@ else
 fi
 
 # User in the metering server to report usage to
-metering_user=(python3 ./workflow-utils/print_organization_name.py)
+metering_user=$(python3 ./workflow-utils/print_organization_name.py)
 if [ $? -ne 0 ]; then
     echo "Error: Could not obtain the name of the organization of user ${PW_USER}. Exiting."
     exit 1
