@@ -22,6 +22,18 @@ else
     git clone -b "$workflow_utils_branch" https://github.com/parallelworks/workflow-utils.git
 fi
 
+# User in the metering server to report usage to
+metering_user=(python3 ./workflow-utils/print_organization_name.py)
+if [ $? -ne 0 ]; then
+    echo "Error: Could not obtain the name of the organization of user ${PW_USER}. Exiting."
+    exit 1
+fi
+
+if [ -z "${metering_user}" ]; then
+    echo "Error: Could not obtain the name of the organization of user ${PW_USER}. Exiting."
+    exit 1
+fi
+
 conda activate
 python3 ./workflow-utils/input_form_resource_wrapper.py 
 
