@@ -6,7 +6,7 @@
         name='metering_user' 
         label='metering_user' 
         type='hidden' 
-        value='honda'  
+        value='__metering_user__'  
     ></param>
     <param 
         name='metering_ip' 
@@ -25,6 +25,16 @@
             label="Dry run?" 
             help='Dry run generates the macroScript.txt file and executes every step of the workflow except running 3DCS'  
         ></param>
+        <param 
+            name='version' 
+            type='select' 
+            label='3DCS Version' 
+            help='Select the 3DCS version' 
+            multiple='false'
+        >
+            <option value="8_0_0_2"  selected="true">8.0.0.2</option>
+            <option value="7_10_0_2" >7.10.0.2</option>
+        </param>
         <param 
             name='analysis_type' 
             type='select' 
@@ -107,7 +117,7 @@
             label='Command to run 3DCS' 
             type='hidden' 
             help='Specify the PATH as seen from Windows Subsystem for Linux or Wine' 
-            value='wine /dcs/wine/apps/3dcs/.wine/drive_c/Program\ Files/DCS/3DCS_MC_8_0_0_2/dcsSimuMacro.exe'
+            value='wine /dcs/wine/apps/3dcs/.wine/drive_c/Program\ Files/DCS/3DCS_MC___dcs_version__/dcsSimuMacro.exe'
         ></param>
         <param 
             name='resource' 
@@ -184,7 +194,7 @@
             label='Command to run 3DCS' 
             type='hidden' 
             help='Specify the PATH as seen from Windows Subsystem for Linux or Wine' 
-            value='wine /dcs/wine/apps/3dcs/.wine/drive_c/Program\ Files/DCS/3DCS_MC_8_0_0_2/dcsSimuMacro.exe'
+            value='wine /dcs/wine/apps/3dcs/.wine/drive_c/Program\ Files/DCS/3DCS_MC___dcs_version__/dcsSimuMacro.exe'
         ></param>
         <param 
             name='resource' 

@@ -1,5 +1,9 @@
 #!/bin/bash
 source inputs.sh
+# Replace __dcs_version__ with the value of dcs_version in inputs.sh
+sed -i "s/__dcs_version__/${dcs_version}/g" inputs.sh
+sed -i "s/__dcs_version__/${dcs_version}/g" inputs.json
+
 
 if [[ "${dcs_output_directory}" == "${dcs_model_directory}" || "${dcs_output_directory}" == "${dcs_model_directory}/"* ]]; then
     echo "Error: Output directory is a subdirectory of model directory." >&2
@@ -17,6 +21,28 @@ if [ -z "${workflow_utils_branch}" ]; then
 else
     # If not empty, clone the specified branch
     git clone -b "$workflow_utils_branch" https://github.com/parallelworks/workflow-utils.git
+fi
+
+# User in the metering server to report usage to
+eval $(python3 ./workflow-utils/load_organization_info.py)
+if [ $? -ne 0 ]; then
+    echo "Error: Could not obtain the name of the organization of user ${PW_USER}. Exiting."
+    exit 1
+fi
+
+if [ -z "${ORGANIZATION_NAME}" ]; then
+    echo "Error: Could not obtain the name of the organization of user ${PW_USER}. Exiting."
+    exit 1
+fi
+sed -i "s/__metering_user__/${ORGANIZATION_NAME}/g" inputs.sh
+sed -i "s/__metering_user__/${ORGANIZATION_NAME}/g" inputs.json
+
+# Check balance
+echo; echo "3DCS allocation balance"
+python3 get_group_allocation_balance.py
+if [ $? -ne 0 ]; then
+    echo "Error: No 3DCS balance is available. Exiting."
+    exit 1
 fi
 
 conda activate
