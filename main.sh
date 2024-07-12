@@ -24,7 +24,7 @@ else
 fi
 
 # User in the metering server to report usage to
-metering_user=$(python3 ./workflow-utils/print_organization_name.py)
+eval $(python3 ./workflow-utils/load_organization_info.py)
 if [ $? -ne 0 ]; then
     echo "Error: Could not obtain the name of the organization of user ${PW_USER}. Exiting."
     exit 1
@@ -36,6 +36,14 @@ if [ -z "${metering_user}" ]; then
 fi
 sed -i "s/__metering_user__/${metering_user}/g" inputs.sh
 sed -i "s/__metering_user__/${metering_user}/g" inputs.json
+
+# Check balance
+echo; echo "3DCS allocation balance"
+python3 get_group_allocation_balance.py
+if [ $? -ne 0 ]; then
+    echo "Error: No 3DCS balance is available. Exiting."
+    exit 1
+fi
 
 conda activate
 python3 ./workflow-utils/input_form_resource_wrapper.py 
