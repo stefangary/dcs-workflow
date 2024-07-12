@@ -10,7 +10,7 @@ fi
 cat >> metering.sh <<HERE
 #!/bin/bash
 while true; do
-    ssh ${resource_ssh_usercontainer_options} usercontainer "ssh ${metering_user}@${metering_ip} \"date >> /home/${metering_user}/.3dcs/usage-pending/$(hostname)-${job_number}-merge\""
+    ssh ${resource_ssh_usercontainer_options} usercontainer "ssh ${metering_user}@${metering_ip} \"date >> /home/${metering_user}/.3dcs/usage-pending/$(hostname)-${job_number}\""
     if [ \$? -ne 0 ]; then
         echo "Unable to report usage to ${metering_user}@${metering_ip}. Killing Slurm job."
         scancel ${SLURM_JOB_ID}
