@@ -30,12 +30,12 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-if [ -z "${metering_user}" ]; then
+if [ -z "${ORGANIZATION_NAME}" ]; then
     echo "Error: Could not obtain the name of the organization of user ${PW_USER}. Exiting."
     exit 1
 fi
-sed -i "s/__metering_user__/${metering_user}/g" inputs.sh
-sed -i "s/__metering_user__/${metering_user}/g" inputs.json
+sed -i "s/__metering_user__/${ORGANIZATION_NAME}/g" inputs.sh
+sed -i "s/__metering_user__/${ORGANIZATION_NAME}/g" inputs.json
 
 # Check balance
 echo; echo "3DCS allocation balance"
