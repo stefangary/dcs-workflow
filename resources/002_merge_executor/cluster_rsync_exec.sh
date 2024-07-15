@@ -39,6 +39,7 @@ fi
 
 # Main script
 cat inputs.sh >> merge.sh
+cat dcs_environment/${dcs_version}.sh >> merge.sh
 cat load_bucket_credentials_ssh.sh >> merge.sh
 cat transfer_inputs.sh >> merge.sh
 cat ${dcs_analysis_type}.sh >> merge.sh

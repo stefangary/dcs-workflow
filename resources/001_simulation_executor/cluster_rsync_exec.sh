@@ -34,6 +34,7 @@ create_case(){
     # Main script
     echo >> ${case_dir}/run_case.sh
     cat inputs.sh >> ${case_dir}/run_case.sh
+    cat dcs_environment/${dcs_version}.sh >> ${case_dir}/run_case.sh
     echo "export case_index=${case_index}" >> ${case_dir}/run_case.sh
     echo "export dcs_model_file=${dcs_model_file}" >> ${case_dir}/run_case.sh
     echo >> ${case_dir}/run_case.sh
