@@ -32,8 +32,8 @@
             help='Select the 3DCS version' 
             multiple='false'
         >
-            <option value="8_0_0_2"  selected="true">8.0.0.2</option>
-            <option value="7_10_0_2" >7.10.0.2</option>
+            <option value="8.0.0.2"  selected="true">8.0.0.2</option>
+            <option value="7.10.0.2" >7.10.0.2</option>
         </param>
         <param 
             name='analysis_type' 
@@ -105,21 +105,6 @@
             value='psutil'
         ></param>
         <param 
-            name='dcs_load' 
-            label='Command to load 3DCS' 
-            type='hidden' 
-            help='To load the environment, enter the appropriate command, for example: module load module-name or source path/to/env.sh.' 
-            value='source /dcs/load-3dcs.sh'
-            optional='true' 
-        ></param>
-        <param 
-            name='dcs_run' 
-            label='Command to run 3DCS' 
-            type='hidden' 
-            help='Specify the PATH as seen from Windows Subsystem for Linux or Wine' 
-            value='wine /dcs/wine/apps/3dcs/.wine/drive_c/Program\ Files/DCS/3DCS_MC___dcs_version__/dcsSimuMacro.exe'
-        ></param>
-        <param 
             name='resource' 
             type='computeResource' 
             label='Resource' 
@@ -180,21 +165,6 @@
             label='PW Conda Directory' 
             type='hidden' 
             value='psutil'
-        ></param>
-        <param 
-            name='dcs_load' 
-            label='Command to load DCS' 
-            type='hidden' 
-            help='To load the environment, enter the appropriate command, for example: module load module-name or source path/to/env.sh.' 
-            value='source /dcs/load-3dcs.sh'
-            optional='true' 
-        ></param>
-        <param 
-            name='dcs_run' 
-            label='Command to run 3DCS' 
-            type='hidden' 
-            help='Specify the PATH as seen from Windows Subsystem for Linux or Wine' 
-            value='wine /dcs/wine/apps/3dcs/.wine/drive_c/Program\ Files/DCS/3DCS_MC___dcs_version__/dcsSimuMacro.exe'
         ></param>
         <param 
             name='resource' 

@@ -1,12 +1,6 @@
 # run in bat file to get correct exit code from the software
 #echo set DCS2FLMD_LICENSE_FILE="$DCS2FLMD_LICENSE_FILE" > run.bat
 
-# Load 3dcs environment
-if ! [ -z "${dcs_load}" ]; then
-    eval "${dcs_load}"
-fi
-
-
 # Create metering script
 cat >> metering.sh <<HERE
 #!/bin/bash

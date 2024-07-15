@@ -1,14 +1,18 @@
 #!/bin/bash
 source inputs.sh
-# Replace __dcs_version__ with the value of dcs_version in inputs.sh
-sed -i "s/__dcs_version__/${dcs_version}/g" inputs.sh
-sed -i "s/__dcs_version__/${dcs_version}/g" inputs.json
 
 
 if [[ "${dcs_output_directory}" == "${dcs_model_directory}" || "${dcs_output_directory}" == "${dcs_model_directory}/"* ]]; then
     echo "Error: Output directory is a subdirectory of model directory." >&2
     exit 1
 fi
+
+# Check if file is provided as an argument
+if ! [ -f "dcs_environment/${dcs_version}.sh" ]; then
+    echo "Error: Missing file dcs_environment/${dcs_version}.sh required to load and run 3DCS. Exiting workflow."
+    exit 1
+fi
+
 
 # Use the resource wrapper
 source /etc/profile.d/parallelworks.sh
@@ -62,6 +66,9 @@ cp \
     ./workflow-utils/cpu_and_memory_usage.py \
     ./workflow-utils/cpu_and_memory_usage_requirements.yaml \
     resources/001_simulation_executor/
+
+cp -r dcs_environment resources/001_simulation_executor/
+cp -r dcs_environment resources/002_merge_executor/
 
 cp ./workflow-utils/load_bucket_credentials_ssh.sh resources/002_merge_executor/
 
