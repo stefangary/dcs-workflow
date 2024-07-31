@@ -18,8 +18,9 @@ def encode_string_to_base64(text):
 ALLOCATION_NAME_3DCS = '3dcs-run-hours'
 PW_PLATFORM_HOST = os.environ.get('PW_PLATFORM_HOST')
 HEADERS = {"Authorization": "Basic {}".format(encode_string_to_base64(os.environ['PW_API_KEY']))}
-ORGANIZATION_ID = os.environ.get('ORGANIZATION_ID')
-GT_ORGANIZATION_URL = f'https://{PW_PLATFORM_HOST}/api/v2/organization/teams?organization={ORGANIZATION_ID}'
+# ORGANIZATION_ID = os.environ.get('ORGANIZATION_ID')
+# GT_ORGANIZATION_URL = f'https://{PW_PLATFORM_HOST}/api/v2/organization/teams?organization={ORGANIZATION_ID}'
+GT_ORGANIZATION_URL = f'https://{PW_PLATFORM_HOST}/api/v2/organization/teams'
 
 def get_balance():
     res = requests.get(GT_ORGANIZATION_URL, headers = HEADERS)
