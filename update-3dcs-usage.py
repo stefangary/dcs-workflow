@@ -90,7 +90,8 @@ def update_group_allocation_used(group_id, allocation_used):
     return http_put_sync(url, payload)
 
 def get_group_id(group_name):
-    url = f'https://{PW_PLATFORM_HOST}/api/v2/organization/teams?organization={CUSTOMER_ORG_ID}'
+    #url = f'https://{PW_PLATFORM_HOST}/api/v2/organization/teams?organization={CUSTOMER_ORG_ID}'
+    url = f'https://{PW_PLATFORM_HOST}/api/v2/organization/teams'
 
     res = requests.get(url, headers = get_headers())
 
