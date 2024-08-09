@@ -136,7 +136,7 @@ while true; do
                 case_dir=$(dirname ${sj} | sed "s|${PWD}/||g")
             fi
         fi
-        sleep 2
+        sleep 0.5
     done
     sleep 30
     submitted_jobs=$(${sshcmd} find ${resource_jobdir} -name job_id.submitted)
