@@ -27,7 +27,7 @@ def encode_string_to_base64(text):
     return encoded_string
 
 # The sleep time must be large enough for the workers to report the next heartbeat 
-SLEEP_TIME: int = 120
+SLEEP_TIME: int = 360
 DCS_DIR: str = os.path.expanduser('~/.3dcs/')
 DCS_PENDING_USAGE_DIR = os.path.join(DCS_DIR, 'usage-pending')
 os.makedirs(DCS_PENDING_USAGE_DIR, exist_ok=True)
@@ -210,9 +210,9 @@ def process_worker_files(worker_files, allocation_used):
             del CONNECTED_WORKERS[worker_file_name]
             # Update allocation used HERE to include worker information
         else:
-            logger.info(f'Worker {worker_file_name} disconnected after {number_of_lines} heartbeats. Assuming 30 seconds connection.')
+            logger.info(f'Worker {worker_file_name} disconnected after {number_of_lines} heartbeats. Assuming 90 seconds connection.')
             processed_worker_file = move_pending_file_to_processed(worker_file)
-            cached_usage += 0.00833
+            cached_usage += 0.025
             del CONNECTED_WORKERS[worker_file_name]
     
     if cached_usage > 0:
