@@ -1,17 +1,18 @@
 # run in bat file to get correct exit code from the software
 #echo set DCS2FLMD_LICENSE_FILE="$DCS2FLMD_LICENSE_FILE" > run.bat
 
+
 # Create metering script
 cat >> metering.sh <<HERE
 #!/bin/bash
 while true; do
-    ssh ${resource_ssh_usercontainer_options} usercontainer "ssh ${metering_user}@${metering_ip} \"date >> /home/${metering_user}/.3dcs/usage-pending/$(hostname)-${job_number}-merge\""
+    ssh -J ${resource_privateIp} ${metering_user}@${metering_ip} \"date >> /home/${metering_user}/.3dcs/usage-pending/$(hostname)-${job_number}-merge\"
     if [ \$? -ne 0 ]; then
         echo "Unable to report usage to ${metering_user}@${metering_ip}. Killing Slurm job."
         scancel ${SLURM_JOB_ID}
         exit 1
     fi
-    sleep 60
+    sleep \$((RANDOM % 61 + 30))
 done
 HERE
 
