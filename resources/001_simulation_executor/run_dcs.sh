@@ -11,7 +11,7 @@ while true; do
         scancel ${SLURM_JOB_ID}
         exit 1
     fi
-    sleep 60
+    sleep \$((RANDOM % 61 + 30))
 done
 HERE
 
